@@ -1,0 +1,6 @@
+{
+  "name": "Resumen CR",
+  "description": "Generador de listados por Centro de Reparto desde Excel y CSV",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,27 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+build/
+dist/
+logs/
+Salida/*.xlsx
+Salida/*.xlsm
+Entrada/*.xlsx
+Entrada/*.xlsm
+Entrada/Procesados/
+webapp/_trabajo/
+~$*
+*.__tmp__.*
+.venv/
+venv/
+
+# Excel de ejemplo con datos reales de personas (nombres, domicilios).
+# NUNCA deben subirse al repositorio. Las pruebas generan sus propios
+# archivos sinteticos y no dependen de estos.
+/*.xlsx
+/*.xls
+/*.xlsm
+
+# Carpeta ajena al proyecto (otro repositorio de Claude Code Skills que
+# vive junto a este directorio de trabajo, no es parte de Resumen CR).
+/superpowers/

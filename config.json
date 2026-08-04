@@ -1,0 +1,27 @@
+{
+  "columna_objetivo": "pr_centro_reparto",
+  "filas_busqueda_encabezado": 10,
+
+  "nombre_hoja_resumen": "Resumen",
+  "nombre_hoja_graficas": "Graficas",
+  "crear_hoja_graficas": true,
+  "si_existe_hoja_resumen": "reemplazar",
+
+  "encabezados": {
+    "folio": "FOLIO",
+    "cr": "CR",
+    "cantidad": "CONTCANTIDAD"
+  },
+  "separador_folio": " - ",
+
+  "sufijo_salida": "_RESUMEN_CR",
+  "carpeta_entrada": "Entrada",
+  "carpeta_salida": "Salida",
+  "carpeta_procesados": "Entrada/Procesados",
+  "mover_procesados": false,
+  "guardar_junto_al_original": false,
+  "sobrescribir_salida": false,
+
+  "top_graficas": 15,
+  "top_pastel": 10
+}

@@ -1,0 +1,12 @@
+CARPETA "SALIDA"
+================
+
+Aqui aparecen los Excel ya procesados.
+
+Cada archivo es una copia del original + dos hojas nuevas:
+
+  * "Resumen"  -> las columnas FOLIO, CR y CONTCANTIDAD.
+  * "Graficas" -> indicadores y dos graficas (Top 15 y distribucion).
+
+Si vuelves a procesar el mismo archivo, el anterior NO se borra: el nuevo se
+guarda con _1, _2, etc. al final del nombre.

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resumen CR &mdash; Generador de Listados de Centro de Reparto</title>
+<meta name="description" content="Procesa archivos Excel y CSV para generar listados ordenados por Centro de Reparto con diseño Apple UI y aceleración en navegador.">
+<script>
+  (function() {
+    try {
+      var saved = localStorage.getItem('resumen_cr_theme');
+      var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (systemDark ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {}
+  })();
+</script>
+<link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+<header class="header-glass">
+  <div class="header-container">
+    <div class="brand-wrapper">
+      <div class="brand-icon-motion" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <path d="M8 13h8"/>
+          <path d="M8 17h8"/>
+        </svg>
+      </div>
+      <div class="brand-info">
+        <h1>Resumen CR <span class="brand-badge">PRO</span></h1>
+        <p>Generación instantánea de listados por Centro de Reparto</p>
+      </div>
+    </div>
+    <button type="button" id="btn-tema" class="theme-pill-btn" aria-label="Cambiar tema de color" aria-pressed="false">
+      <span class="icono-tema" aria-hidden="true">🌙</span>
+      <span class="texto-tema">Modo oscuro</span>
+    </button>
+  </div>
+</header>
+
+<main class="main-layout">
+
+  <!-- AirDrop Style Dropzone -->
+  <section id="zona-arrastre" class="dropzone-apple" tabindex="0" aria-label="Zona para subir archivos Excel o CSV">
+    <input type="file" id="entrada-archivos" multiple accept=".xlsx,.xlsm,.csv" hidden>
+    <div class="dropzone-icon-pulse" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="17 8 12 3 7 8"/>
+        <line x1="12" y1="3" x2="12" y2="15"/>
+      </svg>
+    </div>
+    <h2 class="dropzone-title">Arrastra aquí tus archivos Excel o CSV</h2>
+    <p class="dropzone-subtitle">
+      o <button type="button" id="btn-elegir" class="dropzone-btn-inline">selecciona desde tu equipo</button>
+    </p>
+    <div class="file-pills">
+      <span class="file-pill">.xlsx</span>
+      <span class="file-pill">.xlsm</span>
+      <span class="file-pill">.csv</span>
+      <span class="file-pill">100% Local</span>
+    </div>
+  </section>
+
+  <!-- Advanced Options Collapsible -->
+  <details class="advanced-card">
+    <summary>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      Ajustes de búsqueda
+    </summary>
+    <div class="advanced-content">
+      <div class="advanced-field">
+        <label for="campo-columna">Nombre de la columna objetivo</label>
+        <input type="text" id="campo-columna" value="pr_centro_reparto" placeholder="pr_centro_reparto">
+      </div>
+      <p class="advanced-note">Búsqueda flexible (sin importar acentos o mayúsculas) en todas las hojas del libro.</p>
+    </div>
+  </details>
+
+  <!-- Work Queue Section -->
+  <section id="cola" class="queue-section" hidden>
+    <div class="queue-header">
+      <h2 class="queue-title">Archivos Procesados</h2>
+      <button type="button" id="btn-descargar-todo" class="btn-apple btn-apple-secondary" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Descargar Todo (.ZIP)
+      </button>
+    </div>
+    <div id="lista-trabajos" class="queue-list"></div>
+  </section>
+
+  <!-- Clean Apple Features Grid -->
+  <section class="features-section">
+    <div class="features-grid">
+      <div class="feature-apple-card">
+        <div class="feature-icon-badge" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <h3>Procesamiento Ultra-Rápido</h3>
+        <p>Algoritmo en paralelo multihilo que analiza miles de filas en milisegundos sin congelar la pantalla.</p>
+      </div>
+
+      <div class="feature-apple-card">
+        <div class="feature-icon-badge" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h3>Privacidad Absoluta</h3>
+        <p>Tus documentos se procesan en la memoria local de tu navegador. Ningún dato sale de tu dispositivo.</p>
+      </div>
+
+      <div class="feature-apple-card">
+        <div class="feature-icon-badge" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+        </div>
+        <h3>Reporte Excel Completo</h3>
+        <p>Genera automáticamente un reporte Excel con hoja <code>Resumen</code> diseñada profesionalmente y un <code>Dashboard</code> con indicadores clave y gráficas de distribución.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer-apple">
+  <p>
+    Resumen CR Pro &middot; Procesamiento local seguro &middot; 
+    <a href="https://github.com/klkmoraa/resumen-cr" target="_blank" rel="noopener">Código en GitHub</a>
+  </p>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

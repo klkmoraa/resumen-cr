@@ -1,0 +1,12 @@
+CARPETA "ENTRADA"
+=================
+
+Copia aqui los archivos de Excel que quieras convertir (.xlsx o .xlsm).
+
+Despues abre el programa (ResumenCR.exe o Ejecutar.bat) y pulsa el boton
+"Procesar carpeta Entrada".
+
+Los resultados apareceran en la carpeta "Salida", con el mismo nombre del
+archivo original mas el texto _RESUMEN_CR.
+
+Tus archivos originales NUNCA se modifican ni se borran.
