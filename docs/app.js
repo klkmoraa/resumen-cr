@@ -85,30 +85,34 @@
   }
 
   async function restaurarHistorialUI() {
-    const items = await cargarHistorial();
-    if (!items || items.length === 0) return;
-    
-    // Solo mostrar los últimos 5 para no saturar
-    const recientes = items.slice(0, 5);
-    for (const item of recientes.reverse()) {
-      const { tarjeta } = crearTarjeta(item.nombreArchivo);
-      const insignia = tarjeta.querySelector('.sf-badge');
-      if(insignia) {
-        insignia.className = "sf-badge sf-badge-success";
-        insignia.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Historial`;
-      }
+    try {
+      const items = await cargarHistorial();
+      if (!items || !Array.isArray(items) || items.length === 0) return;
       
-      const pbarWrap = tarjeta.querySelector('.progress-bar-wrap');
-      const pbarLabel = tarjeta.querySelector('.progress-bar-label');
-      if (pbarWrap) pbarWrap.style.display = "none";
-      if (pbarLabel) pbarLabel.style.display = "none";
+      const recientes = items.slice(0, 5);
+      for (const item of recientes.reverse()) {
+        if (!item || !item.datos || !item.datos.resumen) continue;
+        const { tarjeta } = crearTarjeta(item.nombreArchivo || "Archivo");
+        const insignia = tarjeta.querySelector('.sf-badge');
+        if (insignia) {
+          insignia.className = "sf-badge sf-badge-success";
+          insignia.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Historial`;
+        }
+        
+        const pbarWrap = tarjeta.querySelector('.progress-bar-wrap');
+        const pbarLabel = tarjeta.querySelector('.progress-bar-label');
+        if (pbarWrap) pbarWrap.style.display = "none";
+        if (pbarLabel) pbarLabel.style.display = "none";
 
-      pintarResultado(tarjeta, { name: item.nombreArchivo }, item.datos, item.segundos, false);
+        pintarResultado(tarjeta, { name: item.nombreArchivo || "Archivo" }, item.datos, item.segundos || 0, false);
+      }
+    } catch (e) {
+      console.warn("Error seguro restaurando historial:", e);
     }
   }
 
-  // Cargar historial al iniciar
-  restaurarHistorialUI();
+  // Cargar historial de forma asíncrona sin bloquear la app
+  setTimeout(restaurarHistorialUI, 100);
 
   // --- Worker Pool ---
   const workerPool = [];
@@ -489,6 +493,7 @@
   }
 
   function pintarResultado(tarjetaEl, archivoOriginal, datos, segundosReales, esNuevo = true) {
+    if (!datos || !datos.resumen) return null;
     const r = datos.resumen;
 
     if (datos.avisos && datos.avisos.length) {
