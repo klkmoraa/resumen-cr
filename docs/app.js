@@ -1016,10 +1016,10 @@
           });
           
           // Calcular el porcentaje total manualmente
-          const totalSuma = currentModalFilas.reduce((acc, f) => acc + f[2], 0);
+          const sumaTotalTabla = currentModalFilas.reduce((acc, f) => acc + f[2], 0) || 1;
           tablaDatos.forEach(row => {
             const numStr = String(row[3]).replace(/,/g, '');
-            const pct = ((parseInt(numStr) / totalSuma) * 100).toFixed(2) + "%";
+            const pct = ((parseInt(numStr) / sumaTotalTabla) * 100).toFixed(2) + "%";
             row.push(pct);
           });
           
