@@ -64,7 +64,7 @@ const GeneradorExcel = (() => {
 
     ctx.fillStyle = "#64748B";
     ctx.font = '14px "Segoe UI", Arial, sans-serif';
-    ctx.fillText("Volumen individual de envíos por Centro de Reparto", 40, 75);
+    ctx.fillText("Volumen individual de env├¡os por Centro de Reparto", 40, 75);
 
     const data = filasResumen
       .map((f) => ({ cr: String(f[1]), cantidad: Number(f[2]) }))
@@ -151,7 +151,7 @@ const GeneradorExcel = (() => {
 
     ctx.fillStyle = "#64748B";
     ctx.font = '14px "Segoe UI", Arial, sans-serif';
-    ctx.fillText("Participación porcentual de los principales Centros de Reparto", 40, 75);
+    ctx.fillText("Participaci├│n porcentual de los principales Centros de Reparto", 40, 75);
 
     const sorted = filasResumen
       .map((f) => ({ cr: String(f[1]), cantidad: Number(f[2]) }))
@@ -259,7 +259,7 @@ const GeneradorExcel = (() => {
 
     ctx.fillStyle = "#64748B";
     ctx.font = '14px "Segoe UI", Arial, sans-serif';
-    ctx.fillText("Volumen individual (barras) y porcentaje acumulado (línea con umbral 80%)", 40, 75);
+    ctx.fillText("Volumen individual (barras) y porcentaje acumulado (l├¡nea con umbral 80%)", 40, 75);
 
     const data = filasResumen
       .map((f) => ({ cr: String(f[1]), cantidad: Number(f[2]) }))
@@ -371,6 +371,7 @@ const GeneradorExcel = (() => {
     return await canvasToPngBuffer(canvas);
   }
 
+  
   function crearKpiCard(ws, startCol, startRow, endCol, label, formulaStr, calcValue, numFmt = "#,##0", valColor = "FF0071E3") {
     const lblRange = `${startCol}${startRow}:${endCol}${startRow}`;
     const valRange = `${startCol}${startRow + 1}:${endCol}${startRow + 2}`;
@@ -455,68 +456,68 @@ const GeneradorExcel = (() => {
     const encabezados = opciones.encabezados || { folio: "FOLIO", cr: "CR", cantidad: "CONTCANTIDAD" };
 
     wsResumen.columns = [
-      { header: encabezados.folio, key: "folio", width: 22 },
-      { header: encabezados.cr, key: "cr", width: 20 },
-      { header: encabezados.cantidad, key: "cantidad", width: 20 }
+      { key: "folio", width: 22 },
+      { key: "cr", width: 20 },
+      { key: "cantidad", width: 20 }
     ];
 
-    const headerRow = wsResumen.getRow(1);
-    headerRow.height = 28;
-    headerRow.font = { name: "Segoe UI", size: 11, bold: true, color: { argb: "FFFFFFFF" } };
-    headerRow.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF0F172A" } };
-    headerRow.alignment = { vertical: "middle", horizontal: "center" };
+    const tableRows = filasData.map(fila => [fila[0], String(fila[1]), Number(fila[2])]);
 
-    headerRow.eachCell((cell) => {
-      cell.border = {
-        bottom: { style: "medium", color: { argb: "FF0071E3" } }
-      };
+    wsResumen.addTable({
+      name: 'TablaResumen',
+      ref: 'A1',
+      headerRow: true,
+      totalsRow: false,
+      style: {
+        theme: 'TableStyleMedium2',
+        showRowStripes: true,
+      },
+      columns: [
+        { name: encabezados.folio, filterButton: true },
+        { name: encabezados.cr, filterButton: true },
+        { name: encabezados.cantidad, filterButton: true }
+      ],
+      rows: tableRows,
     });
 
-    filasData.forEach((fila, idx) => {
-      const row = wsResumen.addRow({
-        folio: fila[0],
-        cr: String(fila[1]),
-        cantidad: Number(fila[2])
+    // Format columns after adding table
+    filasData.forEach((_, i) => {
+      const row = wsResumen.getRow(i + 2);
+      row.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' };
+      row.getCell(2).alignment = { horizontal: 'center', vertical: 'middle' };
+      row.getCell(2).numFmt = "@"; // Text for CR
+      row.getCell(3).alignment = { horizontal: 'right', vertical: 'middle' };
+      row.getCell(3).numFmt = "#,##0"; 
+      
+      // Discreet borders
+      ['A','B','C'].forEach(col => {
+         const cell = row.getCell(col);
+         const currentBorder = cell.border || {};
+         cell.border = {
+            ...currentBorder,
+            bottom: { style: 'thin', color: { argb: 'FFE2E8F0' } },
+            right: { style: 'thin', color: { argb: 'FFE2E8F0' } }
+         };
       });
-      row.height = 20;
-
-      const isEven = idx % 2 === 0;
-      const bg = isEven ? "FFFFFFFF" : "FFF8FAFC";
-
-      const c1 = row.getCell(1);
-      c1.alignment = { vertical: "middle", horizontal: "center" };
-      c1.font = { name: "Segoe UI", size: 10 };
-      c1.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
-      c1.border = {
-        bottom: { style: "thin", color: { argb: "FFE2E8F0" } },
-        right: { style: "thin", color: { argb: "FFE2E8F0" } }
-      };
-
-      const c2 = row.getCell(2);
-      c2.alignment = { vertical: "middle", horizontal: "left" };
-      c2.font = { name: "Segoe UI", size: 10, bold: true, color: { argb: "FF0F172A" } };
-      c2.numFmt = "@";
-      c2.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
-      c2.border = {
-        bottom: { style: "thin", color: { argb: "FFE2E8F0" } },
-        right: { style: "thin", color: { argb: "FFE2E8F0" } }
-      };
-
-      const c3 = row.getCell(3);
-      c3.alignment = { vertical: "middle", horizontal: "right" };
-      c3.font = { name: "Segoe UI", size: 10, bold: true, color: { argb: "FF0F172A" } };
-      c3.numFmt = "#,##0";
-      c3.fill = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
-      c3.border = {
-        bottom: { style: "thin", color: { argb: "FFE2E8F0" } }
-      };
     });
 
-    wsResumen.autoFilter = { from: "A1", to: `C${numFilas + 1}` };
+    // Data bars for CONTCANTIDAD
+    wsResumen.addConditionalFormatting({
+      ref: `C2:C${numFilas + 1}`,
+      rules: [
+        {
+          type: 'dataBar',
+          cfvo: [{ type: 'min' }, { type: 'max' }],
+          color: { argb: 'FF38BDF8' },
+          gradient: true,
+          border: false
+        }
+      ]
+    });
 
     // 2. Sheet: Dashboard
     const wsDash = workbook.addWorksheet("Dashboard", {
-      views: [{ showGridLines: true }]
+      views: [{ showGridLines: false }]
     });
 
     wsDash.columns = [
@@ -539,7 +540,7 @@ const GeneradorExcel = (() => {
 
     wsDash.mergeCells("B2:N3");
     const bannerCell = wsDash.getCell("B2");
-    bannerCell.value = "DASHBOARD DE CENTROS DE REPARTO (CR)";
+    bannerCell.value = "DASHBOARD EJECUTIVO DE CENTROS DE REPARTO";
     bannerCell.font = { name: "Segoe UI", size: 16, bold: true, color: { argb: "FFFFFFFF" } };
     bannerCell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF0F172A" } };
     bannerCell.alignment = { vertical: "middle", horizontal: "center" };
@@ -547,106 +548,176 @@ const GeneradorExcel = (() => {
     const endRowResumen = numFilas + 1;
 
     // Row 1 KPIs
-    crearKpiCard(
-      wsDash, "B", 5, "D",
-      "Total de Registros",
-      `SUM(Resumen!C2:C${endRowResumen})`,
-      totalRegistros,
-      "#,##0",
-      "FF0071E3"
-    );
-
-    crearKpiCard(
-      wsDash, "E", 5, "G",
-      "Total CR Distintos",
-      `COUNTA(Resumen!B2:B${endRowResumen})`,
-      numFilas,
-      "#,##0",
-      "FF5856D6"
-    );
-
-    crearKpiCard(
-      wsDash, "H", 5, "J",
-      "Promedio Registros / CR",
-      `AVERAGE(Resumen!C2:C${endRowResumen})`,
-      numFilas > 0 ? totalRegistros / numFilas : 0,
-      "#,##0.0",
-      "FF34C759"
-    );
-
-    crearKpiCard(
-      wsDash, "K", 5, "M",
-      "CR con Mayor Cantidad",
-      `INDEX(Resumen!B2:B${endRowResumen}, MATCH(MAX(Resumen!C2:C${endRowResumen}), Resumen!C2:C${endRowResumen}, 0))`,
-      topCRName,
-      "@",
-      "FF32ADE6"
-    );
+    crearKpiCard(wsDash, "B", 5, "D", "Total de Registros", `SUM(Resumen!C2:C${endRowResumen})`, totalRegistros, "#,##0", "FF0071E3");
+    crearKpiCard(wsDash, "E", 5, "G", "Total CR Distintos", `COUNTA(Resumen!B2:B${endRowResumen})`, numFilas, "#,##0", "FF5856D6");
+    crearKpiCard(wsDash, "H", 5, "J", "Promedio Registros / CR", `AVERAGE(Resumen!C2:C${endRowResumen})`, numFilas > 0 ? totalRegistros / numFilas : 0, "#,##0.0", "FF34C759");
+    crearKpiCard(wsDash, "K", 5, "M", "CR con Mayor Cantidad", `INDEX(Resumen!B2:B${endRowResumen}, MATCH(MAX(Resumen!C2:C${endRowResumen}), Resumen!C2:C${endRowResumen}, 0))`, topCRName, "@", "FF32ADE6");
 
     // Row 2 KPIs
-    crearKpiCard(
-      wsDash, "B", 9, "D",
-      "Cantidad Máxima",
-      `MAX(Resumen!C2:C${endRowResumen})`,
-      maxCantidad,
-      "#,##0",
-      "FFAF52DE"
-    );
-
-    crearKpiCard(
-      wsDash, "E", 9, "G",
-      "Rango Total de Folios",
-      null,
-      `1 - ${totalRegistros.toLocaleString("es-MX")}`,
-      "@",
-      "FFFF9500"
-    );
+    crearKpiCard(wsDash, "B", 9, "D", "Cantidad Máxima", `MAX(Resumen!C2:C${endRowResumen})`, maxCantidad, "#,##0", "FFAF52DE");
+    crearKpiCard(wsDash, "E", 9, "G", "Rango Total de Folios", null, `1 - ${totalRegistros.toLocaleString("es-MX")}`, "@", "FFFF9500");
 
     const fechaHora = new Date().toLocaleString("es-MX");
-    wsDash.mergeCells("H9:M9");
-    wsDash.mergeCells("H10:M11");
-
+    wsDash.mergeCells("H9:N9");
+    wsDash.mergeCells("H10:N12");
     const infoLbl = wsDash.getCell("H9");
     infoLbl.value = "INFORMACIÓN DEL DOCUMENTO";
     infoLbl.font = { name: "Segoe UI", size: 9, bold: true, color: { argb: "FF64748B" } };
     infoLbl.alignment = { vertical: "middle", horizontal: "center" };
     infoLbl.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFF1F5F9" } };
-
     const infoVal = wsDash.getCell("H10");
-    infoVal.value = `Hoja Origen: '${resultado.hojaOrigen || "Datos"}' | Generado: ${fechaHora}`;
-    infoVal.font = { name: "Segoe UI", size: 11, bold: true, color: { argb: "FF1E293B" } };
-    infoVal.alignment = { vertical: "middle", horizontal: "center" };
+    infoVal.value = `Archivo: '${nombreOriginal}'\nHoja Origen: '${resultado.hojaOrigen || "Datos"}'\nGenerado: ${fechaHora}`;
+    infoVal.font = { name: "Segoe UI", size: 10, bold: true, color: { argb: "FF1E293B" } };
+    infoVal.alignment = { vertical: "middle", horizontal: "center", wrapText: true };
     infoVal.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFFFFFF" } };
 
+    // Gráfica de Barras Nativa (Top 15 CRs con barras de datos)
+    wsDash.mergeCells("B13:G13");
+    const chartLbl = wsDash.getCell("B13");
+    chartLbl.value = "TOP 15 CENTROS DE REPARTO (Gráfica de Datos Nativa)";
+    chartLbl.font = { name: "Segoe UI", size: 12, bold: true, color: { argb: "FFFFFFFF" } };
+    chartLbl.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF0F172A" } };
+    chartLbl.alignment = { vertical: "middle", horizontal: "center" };
+
+    const top15 = [...filasData]
+      .map(f => ({ cr: String(f[1]), cantidad: Number(f[2]) }))
+      .sort((a, b) => b.cantidad - a.cantidad)
+      .slice(0, 15);
+
+    top15.forEach((item, idx) => {
+      const rowNum = 14 + idx;
+      wsDash.mergeCells(`B${rowNum}:C${rowNum}`);
+      wsDash.mergeCells(`D${rowNum}:G${rowNum}`);
+      
+      const cellCR = wsDash.getCell(`B${rowNum}`);
+      cellCR.value = item.cr;
+      cellCR.font = { name: "Segoe UI", size: 11, bold: true };
+      cellCR.alignment = { horizontal: "right", vertical: "middle" };
+      cellCR.border = { 
+        left: { style: "thin", color: { argb: "FFCBD5E1" } },
+        bottom: { style: "thin", color: { argb: "FFE2E8F0" } }
+      };
+      
+      const cellVal = wsDash.getCell(`D${rowNum}`);
+      cellVal.value = item.cantidad;
+      cellVal.numFmt = "#,##0";
+      cellVal.font = { name: "Segoe UI", size: 11 };
+      cellVal.alignment = { horizontal: "left", vertical: "middle" };
+      cellVal.border = { 
+        right: { style: "thin", color: { argb: "FFCBD5E1" } },
+        bottom: { style: "thin", color: { argb: "FFE2E8F0" } }
+      };
+    });
+
+    if (top15.length > 0) {
+      wsDash.addConditionalFormatting({
+        ref: `D14:D${13 + top15.length}`,
+        rules: [
+          {
+            type: 'dataBar',
+            cfvo: [{ type: 'min' }, { type: 'max' }],
+            color: { argb: 'FF0071E3' },
+            gradient: true,
+            border: false
+          }
+        ]
+      });
+      // Bottom border for the table
+      for(let c = 2; c <= 7; c++) {
+        wsDash.getRow(13 + top15.length).getCell(c).border = {
+           bottom: { style: 'medium', color: { argb: 'FFCBD5E1' } },
+           ...(c === 2 ? { left: { style: "thin", color: { argb: "FFCBD5E1" } } } : {}),
+           ...(c === 7 ? { right: { style: "thin", color: { argb: "FFCBD5E1" } } } : {})
+        };
+      }
+    }
+
+    
+    // Heatmap Nativo (Bottom 10 CRs)
+    wsDash.mergeCells("I13:N13");
+    const heatmapLbl = wsDash.getCell("I13");
+    heatmapLbl.value = "BOTTOM 10 CENTROS DE REPARTO (Mapa de Calor Nativo)";
+    heatmapLbl.font = { name: "Segoe UI", size: 12, bold: true, color: { argb: "FFFFFFFF" } };
+    heatmapLbl.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF0F172A" } };
+    heatmapLbl.alignment = { vertical: "middle", horizontal: "center" };
+
+    const bottom10 = [...filasData]
+      .map(f => ({ cr: String(f[1]), cantidad: Number(f[2]) }))
+      .sort((a, b) => a.cantidad - b.cantidad)
+      .slice(0, 10);
+
+    bottom10.forEach((item, idx) => {
+      const rowNum = 14 + idx;
+      wsDash.mergeCells(`I${rowNum}:K${rowNum}`);
+      wsDash.mergeCells(`L${rowNum}:N${rowNum}`);
+      
+      const cellCR = wsDash.getCell(`I${rowNum}`);
+      cellCR.value = item.cr;
+      cellCR.font = { name: "Segoe UI", size: 11, bold: true };
+      cellCR.alignment = { horizontal: "right", vertical: "middle" };
+      cellCR.border = { 
+        left: { style: "thin", color: { argb: "FFCBD5E1" } },
+        bottom: { style: "thin", color: { argb: "FFE2E8F0" } }
+      };
+      
+      const cellVal = wsDash.getCell(`L${rowNum}`);
+      cellVal.value = item.cantidad;
+      cellVal.numFmt = "#,##0";
+      cellVal.font = { name: "Segoe UI", size: 11 };
+      cellVal.alignment = { horizontal: "center", vertical: "middle" };
+      cellVal.border = { 
+        right: { style: "thin", color: { argb: "FFCBD5E1" } },
+        bottom: { style: "thin", color: { argb: "FFE2E8F0" } }
+      };
+    });
+
+    if (bottom10.length > 0) {
+      wsDash.addConditionalFormatting({
+        ref: `L14:L${13 + bottom10.length}`,
+        rules: [
+          {
+            type: 'colorScale',
+            cfvo: [{ type: 'min' }, { type: 'percentile', value: 50 }, { type: 'max' }],
+            color: [
+              { argb: 'FFF87171' },
+              { argb: 'FFFBBF24' },
+              { argb: 'FF34D399' } 
+            ]
+          }
+        ]
+      });
+      for(let c = 9; c <= 14; c++) {
+        const colLet = ["I","J","K","L","M","N"][c-9];
+        wsDash.getRow(13 + bottom10.length).getCell(colLet).border = {
+           bottom: { style: 'medium', color: { argb: 'FFCBD5E1' } },
+           ...(c === 9 ? { left: { style: "thin", color: { argb: "FFCBD5E1" } } } : {}),
+           ...(c === 14 ? { right: { style: "thin", color: { argb: "FFCBD5E1" } } } : {})
+        };
+      }
+    }
+
     try {
-      const buf1 = await generarGraficaTop15(filasData);
-      if (buf1) {
-        const id1 = workbook.addImage({ buffer: buf1, extension: "png" });
-        wsDash.addImage(id1, {
-          tl: { col: 1, row: 13 },
-          ext: { width: 620, height: 360 }
-        });
-      }
+      if (typeof obtenerCanvas === 'function') {
+        const buf2 = await generarGraficaDona(filasData, totalRegistros);
+        if (buf2) {
+          const id2 = workbook.addImage({ buffer: buf2, extension: "png" });
+          wsDash.addImage(id2, {
+            tl: { col: 1, row: 30 },
+            ext: { width: 620, height: 360 }
+          });
+        }
 
-      const buf2 = await generarGraficaDona(filasData, totalRegistros);
-      if (buf2) {
-        const id2 = workbook.addImage({ buffer: buf2, extension: "png" });
-        wsDash.addImage(id2, {
-          tl: { col: 8, row: 13 },
-          ext: { width: 620, height: 360 }
-        });
-      }
-
-      const buf3 = await generarGraficaPareto(filasData);
-      if (buf3) {
-        const id3 = workbook.addImage({ buffer: buf3, extension: "png" });
-        wsDash.addImage(id3, {
-          tl: { col: 1, row: 32 },
-          ext: { width: 1250, height: 380 }
-        });
+        const buf3 = await generarGraficaPareto(filasData);
+        if (buf3) {
+          const id3 = workbook.addImage({ buffer: buf3, extension: "png" });
+          wsDash.addImage(id3, {
+            tl: { col: 8, row: 30 },
+            ext: { width: 620, height: 360 }
+          });
+        }
       }
     } catch (e) {
-      console.warn("No se pudieron generar las imágenes de las gráficas:", e);
+      console.warn("No se pudieron generar las imagenes de las graficas:", e);
     }
 
     const arrayBuf = await workbook.xlsx.writeBuffer();

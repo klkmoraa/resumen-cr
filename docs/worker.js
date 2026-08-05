@@ -50,17 +50,23 @@ self.onmessage = async function (evento) {
   try {
     let wb;
     if (/\.csv$/i.test(nombreArchivo)) {
+      self.postMessage({ id, tipo: "progreso", progreso: 10, estado: "Leyendo archivo CSV..." });
       const texto = decodificarTexto(arrayBuffer);
       if (!texto.trim()) throw new Error("El archivo CSV está vacío.");
+      self.postMessage({ id, tipo: "progreso", progreso: 25, estado: "Estructurando datos CSV..." });
       const separador = detectarSeparador(texto);
       const wbCsv = XLSX.read(texto, { type: "string", raw: true, FS: separador });
       wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, wbCsv.Sheets[wbCsv.SheetNames[0]], "Datos");
     } else {
+      self.postMessage({ id, tipo: "progreso", progreso: 10, estado: "Leyendo libro Excel..." });
       wb = XLSX.read(arrayBuffer, { type: "array" });
     }
 
+    self.postMessage({ id, tipo: "progreso", progreso: 40, estado: "Calculando folios y conteos..." });
     const resultado = ResumenCR.calcularResumen(wb, opciones);
+    
+    self.postMessage({ id, tipo: "progreso", progreso: 70, estado: "Generando reporte de salida y gráficas..." });
     const reportBytes = await GeneradorExcel.generarReporteCompleto(resultado, opciones, nombreArchivo);
     const nombreSalida = GeneradorExcel.obtenerNombreSalida(nombreArchivo);
 
@@ -83,6 +89,7 @@ self.onmessage = async function (evento) {
           hojaOrigen: resultado.hojaOrigen,
           segundos: Math.round((performance.now() - t0) / 100) / 10,
           muestraCR: muestraTop(resultado.filas, 15),
+          filasResumen: resultado.filas,
         },
       },
       [outBuf]
