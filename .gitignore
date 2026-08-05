@@ -14,6 +14,7 @@ webapp/_trabajo/
 *.__tmp__.*
 .venv/
 venv/
+node_modules/
 
 # Excel de ejemplo con datos reales de personas (nombres, domicilios).
 # NUNCA deben subirse al repositorio. Las pruebas generan sus propios
