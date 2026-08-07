@@ -421,30 +421,7 @@
   }
 
   // ------------------------------------------------------------------
-  // 1. Modo Compacto / Pantalla Dividida (Split-Screen Mode)
-  // ------------------------------------------------------------------
-  const btnCompact = document.getElementById("btn-compact");
-  if (btnCompact) {
-    try {
-      const guardado = localStorage.getItem("juan_workspace_compact");
-      if (guardado === "true") {
-        document.body.classList.add("compact-view");
-        btnCompact.classList.add("active");
-      }
-    } catch (e) {}
-
-    btnCompact.addEventListener("click", () => {
-      sonarPop(540);
-      const activo = document.body.classList.toggle("compact-view");
-      btnCompact.classList.toggle("active", activo);
-      try {
-        localStorage.setItem("juan_workspace_compact", String(activo));
-      } catch (e) {}
-    });
-  }
-
-  // ------------------------------------------------------------------
-  // 2. Historial de Turno & Recuperación Instantánea (Local & Privado)
+  // Historial del Turno & Recuperación Instantánea (Local & Privado)
   // ------------------------------------------------------------------
   function obtenerHistorial() {
     try {
