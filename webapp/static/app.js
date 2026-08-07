@@ -352,7 +352,7 @@
   }
 
   // ------------------------------------------------------------------
-  // Random Clay Palette Generator & Switcher
+  // Random Clay Palette Generator on EVERY Page Load (100% Automático)
   // ------------------------------------------------------------------
   const PALETAS_CLAY = [
     { id: "blue", nombre: "Azul Real" },
@@ -365,33 +365,10 @@
     { id: "orange", nombre: "Naranja Volcánico" }
   ];
 
-  const btnColor = document.getElementById("btn-color");
-  const txtColorNombre = document.getElementById("txt-color-nombre");
-
-  function aplicarPaletaClay(paletaId) {
-    document.documentElement.setAttribute("data-clay-color", paletaId);
-    const item = PALETAS_CLAY.find((p) => p.id === paletaId) || PALETAS_CLAY[0];
-    if (txtColorNombre) {
-      txtColorNombre.textContent = item.nombre;
-    }
-  }
-
   function inicializarPaletaAleatoria() {
     const indice = Math.floor(Math.random() * PALETAS_CLAY.length);
     const paletaSeleccionada = PALETAS_CLAY[indice];
-    aplicarPaletaClay(paletaSeleccionada.id);
-
-    if (btnColor) {
-      btnColor.addEventListener("click", () => {
-        sonarPop(680);
-        const actual = document.documentElement.getAttribute("data-clay-color") || "blue";
-        let siguienteIndice = Math.floor(Math.random() * PALETAS_CLAY.length);
-        if (PALETAS_CLAY[siguienteIndice].id === actual) {
-          siguienteIndice = (siguienteIndice + 1) % PALETAS_CLAY.length;
-        }
-        aplicarPaletaClay(PALETAS_CLAY[siguienteIndice].id);
-      });
-    }
+    document.documentElement.setAttribute("data-clay-color", paletaSeleccionada.id);
   }
 
   inicializarPaletaAleatoria();

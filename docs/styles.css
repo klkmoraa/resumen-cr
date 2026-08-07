@@ -1282,19 +1282,21 @@ code {
 .card-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
   margin-top: 18px;
+  width: 100%;
 }
 
 /* ==========================================================================
    CLAY BUTTONS SYSTEM (Extruded Salidos & Sunken Hundidos)
    ========================================================================== */
-.btn-apple {
+.btn-apple, a.btn-apple, button.btn-apple {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  padding: 12px 24px;
+  gap: 8px;
+  padding: 11px 20px;
   border-radius: var(--radius-pill);
   font-size: 13px;
   font-weight: 800;
@@ -1303,6 +1305,9 @@ code {
   text-decoration: none;
   border: none;
   user-select: none;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
   transition: all var(--spring-snappy);
 }
 
