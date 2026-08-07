@@ -193,6 +193,7 @@
           localStorage.setItem(CLAVE_TEMA_STORAGE, nuevoTema);
         } catch (e) {}
         aplicarTema(nuevoTema);
+        sonarPop(520);
       });
     }
   }
@@ -200,11 +201,226 @@
   inicializarTema();
 
   // ------------------------------------------------------------------
+  // 🔊 Web Audio API Haptics Synthesizer (Puro JS, Cero Archivos)
+  // ------------------------------------------------------------------
+  let audioCtx = null;
+  let audioHabilitado = true;
+  const CLAVE_AUDIO_STORAGE = "resumen_cr_audio";
+
+  try {
+    const audioGuardado = localStorage.getItem(CLAVE_AUDIO_STORAGE);
+    if (audioGuardado !== null) {
+      audioHabilitado = audioGuardado === "true";
+    }
+  } catch (e) {}
+
+  const btnAudio = document.getElementById("btn-audio");
+  const iconoAudio = btnAudio ? btnAudio.querySelector(".icono-audio") : null;
+  const textoAudio = btnAudio ? btnAudio.querySelector(".texto-audio") : null;
+
+  function actualizarBotonAudio() {
+    if (iconoAudio) iconoAudio.textContent = audioHabilitado ? "🔊" : "🔇";
+    if (textoAudio) textoAudio.textContent = audioHabilitado ? "Sonido" : "Silencio";
+    if (btnAudio) btnAudio.setAttribute("aria-pressed", audioHabilitado ? "true" : "false");
+  }
+  actualizarBotonAudio();
+
+  function getAudioCtx() {
+    if (!audioHabilitado) return null;
+    try {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  if (btnAudio) {
+    btnAudio.addEventListener("click", () => {
+      audioHabilitado = !audioHabilitado;
+      try {
+        localStorage.setItem(CLAVE_AUDIO_STORAGE, String(audioHabilitado));
+      } catch (e) {}
+      actualizarBotonAudio();
+      if (audioHabilitado) {
+        sonarPop(600);
+      }
+    });
+  }
+
+  // 1. Sonido Pop de Arcilla Cerámica (Clicks, chips, switches)
+  function sonarPop(frecuencia = 440) {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(frecuencia, now);
+      osc.frequency.exponentialRampToValueAtTime(frecuencia * 0.42, now + 0.07);
+
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.08);
+    } catch (e) {}
+  }
+
+  // 2. Sonido Gelatina / Squish Elástico (Drag & Hover)
+  function sonarSquish() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(240, now);
+      osc.frequency.exponentialRampToValueAtTime(480, now + 0.05);
+      osc.frequency.exponentialRampToValueAtTime(160, now + 0.12);
+
+      gain.gain.setValueAtTime(0.16, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch (e) {}
+  }
+
+  // 3. Sonido Acorde Triunfal / Éxito (Archivo Procesado)
+  function sonarExito() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    try {
+      const notas = [523.25, 659.25, 783.99, 1046.50]; // Do Mayor brillante (C5, E5, G5, C6)
+      const now = ctx.currentTime;
+      notas.forEach((freq, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const startTime = now + i * 0.06;
+        const duracion = 0.28;
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, startTime);
+
+        gain.gain.setValueAtTime(0.001, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.18, startTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duracion);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + duracion + 0.05);
+      });
+    } catch (e) {}
+  }
+
+  // 4. Sonido Impacto / Drop de Arcilla (Soltar archivo)
+  function sonarDrop() {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    try {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(180, now);
+      osc.frequency.exponentialRampToValueAtTime(45, now + 0.12);
+
+      gain.gain.setValueAtTime(0.28, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch (e) {}
+  }
+
+  // ------------------------------------------------------------------
+  // Random Clay Palette Generator & Switcher
+  // ------------------------------------------------------------------
+  const PALETAS_CLAY = [
+    { id: "blue", nombre: "Azul Real" },
+    { id: "green", nombre: "Verde Esmeralda" },
+    { id: "red", nombre: "Rojo Coral" },
+    { id: "amber", nombre: "Ámbar Solar" },
+    { id: "purple", nombre: "Púrpura Eléctrico" },
+    { id: "cyan", nombre: "Cian Turquesa" },
+    { id: "pink", nombre: "Rosa Fucsia" },
+    { id: "orange", nombre: "Naranja Volcánico" }
+  ];
+
+  const btnColor = document.getElementById("btn-color");
+  const txtColorNombre = document.getElementById("txt-color-nombre");
+
+  function aplicarPaletaClay(paletaId) {
+    document.documentElement.setAttribute("data-clay-color", paletaId);
+    const item = PALETAS_CLAY.find((p) => p.id === paletaId) || PALETAS_CLAY[0];
+    if (txtColorNombre) {
+      txtColorNombre.textContent = item.nombre;
+    }
+  }
+
+  function inicializarPaletaAleatoria() {
+    const indice = Math.floor(Math.random() * PALETAS_CLAY.length);
+    const paletaSeleccionada = PALETAS_CLAY[indice];
+    aplicarPaletaClay(paletaSeleccionada.id);
+
+    if (btnColor) {
+      btnColor.addEventListener("click", () => {
+        sonarPop(680);
+        const actual = document.documentElement.getAttribute("data-clay-color") || "blue";
+        let siguienteIndice = Math.floor(Math.random() * PALETAS_CLAY.length);
+        if (PALETAS_CLAY[siguienteIndice].id === actual) {
+          siguienteIndice = (siguienteIndice + 1) % PALETAS_CLAY.length;
+        }
+        aplicarPaletaClay(PALETAS_CLAY[siguienteIndice].id);
+      });
+    }
+  }
+
+  inicializarPaletaAleatoria();
+
+  // ------------------------------------------------------------------
+  // Saludo Dinámico para Juan
+  // ------------------------------------------------------------------
+  function inicializarSaludoPersonal() {
+    const heroSaludo = document.getElementById("hero-saludo");
+    const hora = new Date().getHours();
+    let momento = "¡Buenos días, Juan!";
+    if (hora >= 12 && hora < 19) {
+      momento = "¡Buenas tardes, Juan!";
+    } else if (hora >= 19 || hora < 6) {
+      momento = "¡Buenas noches, Juan!";
+    }
+    if (heroSaludo) {
+      heroSaludo.textContent = `${momento} Tu espacio de trabajo está listo`;
+    }
+  }
+  inicializarSaludoPersonal();
+
+  // ------------------------------------------------------------------
   // Presets de Columnas
   // ------------------------------------------------------------------
   const presetChips = document.querySelectorAll(".preset-chip");
   presetChips.forEach((chip) => {
     chip.addEventListener("click", () => {
+      sonarPop(480);
       presetChips.forEach((c) => c.classList.remove("active"));
       chip.classList.add("active");
       const val = chip.getAttribute("data-preset");
@@ -265,6 +481,7 @@
 
   if (btnLimpiar) {
     btnLimpiar.addEventListener("click", () => {
+      sonarPop(340);
       if (lista) lista.innerHTML = "";
       trabajosListos.length = 0;
       if (entrada) entrada.disabled = false;
@@ -273,9 +490,10 @@
   }
 
   // ------------------------------------------------------------------
-  // Arrastre AirDrop Style
+  // Arrastre AirDrop Style & Rubberband Squish Physics
   // ------------------------------------------------------------------
   function abrirSelector() {
+    sonarPop(500);
     if (entrada) entrada.click();
   }
   if (btnElegir) btnElegir.addEventListener("click", (e) => {
@@ -291,23 +509,42 @@
       }
     });
 
-    ["dragenter", "dragover"].forEach((evt) =>
+    let dragCount = 0;
+    ["dragenter"].forEach((evt) =>
       document.body.addEventListener(evt, (e) => {
         e.preventDefault();
-        zona.classList.add("highlight");
-        // Add a global class for the fullscreen effect
-        document.body.classList.add("global-drag-active");
+        dragCount++;
+        if (dragCount === 1) {
+          sonarSquish();
+          zona.classList.add("highlight", "squash-drag");
+          document.body.classList.add("global-drag-active");
+        }
       })
     );
-    ["dragleave", "drop"].forEach((evt) =>
+    ["dragover"].forEach((evt) =>
       document.body.addEventListener(evt, (e) => {
         e.preventDefault();
-        zona.classList.remove("highlight");
-        document.body.classList.remove("global-drag-active");
+      })
+    );
+    ["dragleave"].forEach((evt) =>
+      document.body.addEventListener(evt, (e) => {
+        e.preventDefault();
+        dragCount = Math.max(0, dragCount - 1);
+        if (dragCount === 0) {
+          zona.classList.remove("highlight", "squash-drag");
+          document.body.classList.remove("global-drag-active");
+        }
       })
     );
     document.body.addEventListener("drop", (e) => {
-      const archivos = e.dataTransfer.files;
+      e.preventDefault();
+      dragCount = 0;
+      sonarDrop();
+      zona.classList.remove("highlight", "squash-drag");
+      zona.classList.add("squash-bounce");
+      setTimeout(() => zona.classList.remove("squash-bounce"), 750);
+      document.body.classList.remove("global-drag-active");
+      const archivos = e.dataTransfer ? e.dataTransfer.files : null;
       if (archivos && archivos.length) manejarArchivos(archivos);
     });
   }
@@ -438,6 +675,7 @@
 
       const segundosReales = Math.round((performance.now() - inicio) / 100) / 10;
       if (datos.ok) {
+        sonarExito();
         insignia.className = "sf-badge sf-badge-success";
         insignia.innerHTML = `
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -763,9 +1001,14 @@
       pieData.push(otrosSuma);
     }
 
+    const esDark = document.documentElement.getAttribute("data-theme") === "dark";
+    const textColor = esDark ? "#f1f5f9" : "#1e293b";
+    const secondaryColor = esDark ? "#94a3b8" : "#5a6e85";
+    const gridColor = esDark ? "rgba(255, 255, 255, 0.08)" : "rgba(160, 175, 198, 0.25)";
+
     const colorPalette = [
-      '#0a84ff', '#32ade6', '#5e5ce6', '#bf5af2', '#30d158', 
-      '#ff453a', '#ff9f0a', '#64d2ff', '#af52de', '#34c759', '#6e6e73'
+      '#3b82f6', '#60a5fa', '#6366f1', '#8b5cf6', '#10b981', 
+      '#f43f5e', '#f59e0b', '#06b6d4', '#ec4899', '#14b8a6', '#64748b'
     ];
 
     const ctxPie = document.getElementById("chart-pie");
@@ -779,15 +1022,15 @@
             data: pieData,
             backgroundColor: colorPalette,
             borderWidth: 2,
-            borderColor: 'transparent'
+            borderColor: esDark ? '#202635' : '#f4f8fc'
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
-            legend: { position: 'bottom', labels: { color: '#98989d', font: { family: "'Plus Jakarta Sans', sans-serif", size: 11 } } },
-            title: { display: true, text: 'Distribución: Top 10 vs Otros', color: '#f5f5f7', font: { size: 14, family: "'Plus Jakarta Sans', sans-serif" } }
+            legend: { position: 'bottom', labels: { color: secondaryColor, font: { family: "'Plus Jakarta Sans', sans-serif", size: 11, weight: 600 } } },
+            title: { display: true, text: 'Distribución: Top 10 vs Otros', color: textColor, font: { size: 14, family: "'Plus Jakarta Sans', sans-serif", weight: 800 } }
           }
         }
       });
@@ -815,17 +1058,20 @@
               type: 'line',
               label: 'Acumulado %',
               data: paretoDataLine,
-              borderColor: '#ff9f0a',
-              backgroundColor: '#ff9f0a',
+              borderColor: '#f59e0b',
+              backgroundColor: '#f59e0b',
+              borderWidth: 3,
+              pointBackgroundColor: '#f59e0b',
+              pointRadius: 3,
               yAxisID: 'y1',
-              tension: 0.3
+              tension: 0.35
             },
             {
               type: 'bar',
               label: 'Volumen',
               data: paretoDataBars,
-              backgroundColor: '#5e5ce6',
-              borderRadius: 4,
+              backgroundColor: esDark ? '#6085fa' : '#3b82f6',
+              borderRadius: 8,
               yAxisID: 'y'
             }
           ]
@@ -835,16 +1081,16 @@
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
           plugins: {
-            legend: { position: 'top', labels: { color: '#98989d', font: { family: "'Plus Jakarta Sans', sans-serif" } } },
-            title: { display: true, text: 'Análisis de Pareto', color: '#f5f5f7', font: { size: 14, family: "'Plus Jakarta Sans', sans-serif" } }
+            legend: { position: 'top', labels: { color: secondaryColor, font: { family: "'Plus Jakarta Sans', sans-serif", weight: 700 } } },
+            title: { display: true, text: 'Análisis de Pareto', color: textColor, font: { size: 15, family: "'Plus Jakarta Sans', sans-serif", weight: 800 } }
           },
           scales: {
             y: {
               type: 'linear',
               display: true,
               position: 'left',
-              grid: { color: 'rgba(255, 255, 255, 0.05)' },
-              ticks: { color: '#98989d' }
+              grid: { color: gridColor },
+              ticks: { color: secondaryColor, font: { family: "'JetBrains Mono', monospace", weight: 600 } }
             },
             y1: {
               type: 'linear',
@@ -853,11 +1099,11 @@
               min: 0,
               max: 100,
               grid: { drawOnChartArea: false },
-              ticks: { color: '#98989d' }
+              ticks: { color: secondaryColor, font: { family: "'JetBrains Mono', monospace", weight: 600 } }
             },
             x: {
               grid: { display: false },
-              ticks: { color: '#98989d' }
+              ticks: { color: secondaryColor, font: { family: "'Plus Jakarta Sans', sans-serif", weight: 600 } }
             }
           }
         }

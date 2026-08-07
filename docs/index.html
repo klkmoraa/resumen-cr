@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Resumen CR Pro — Procesador Inteligente de Listados de Reparto</title>
-<meta name="description" content="Procesa archivos Excel y CSV para generar listados ordenados por Centro de Reparto con diseño Apple UI de última generación y aceleración en navegador.">
+<title>Workspace Juan — Resumen CR Pro</title>
+<meta name="description" content="Estación de trabajo personalizada de Juan para procesar archivos Excel y CSV por Centro de Reparto.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
     } catch (e) {}
   })();
 </script>
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 
@@ -27,25 +27,39 @@
 <header class="header-glass">
   <div class="header-container">
     <div class="brand-wrapper">
-      <div class="brand-icon-motion" aria-hidden="true">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <path d="M8 13h8"/>
-          <path d="M8 17h8"/>
+      <div class="brand-icon-motion svg-motion-float" aria-hidden="true" title="Workspace Juan">
+        <svg class="svg-motion-wiggle" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
         </svg>
       </div>
       <div class="brand-info">
-        <h1>Resumen CR <span class="brand-badge">PRO 2.0</span></h1>
-        <p>Generación instantánea de listados por Centro de Reparto</p>
+        <h1>Workspace Juan <span class="brand-badge">PRO</span></h1>
+        <p id="saludo-personal">Estación de trabajo para gestión de listados y folios CR</p>
       </div>
     </div>
 
     <div class="header-controls">
-      <div class="engine-status-pill" title="Motor Web Worker en navegador habilitado">
+      <div class="engine-status-pill" title="Motor Web Worker listo para trabajar">
         <span class="pulse-dot"></span>
-        <span class="status-text">Worker Ready</span>
+        <span class="status-text">Listo para trabajar</span>
       </div>
+
+      <button type="button" id="btn-color" class="palette-shuffle-btn" aria-label="Cambiar variante de color de arcilla" title="Cambiar color aleatorio">
+        <svg class="svg-motion-wiggle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 2a7 7 0 0 0 7 7c0 2-1.5 3-3 3h-2a2 2 0 0 1-2-2 2 2 0 0 0-2-2c-2 0-3 1.5-3 3a7 7 0 0 0 7 7"/>
+          <circle cx="8" cy="10" r="1" fill="currentColor"/>
+          <circle cx="12" cy="7" r="1" fill="currentColor"/>
+          <circle cx="16" cy="10" r="1" fill="currentColor"/>
+        </svg>
+        <span id="txt-color-nombre">Color Clay</span>
+      </button>
+
+      <button type="button" id="btn-audio" class="theme-pill-btn" aria-label="Efectos de sonido táctiles" title="Sonidos táctiles hápticos">
+        <span class="icono-audio" aria-hidden="true">🔊</span>
+        <span class="texto-audio">Sonido</span>
+      </button>
 
       <button type="button" id="btn-tema" class="theme-pill-btn" aria-label="Cambiar tema de color" aria-pressed="false">
         <span class="icono-tema" aria-hidden="true">🌙</span>
@@ -59,9 +73,12 @@
 
   <!-- Hero Section -->
   <section class="hero-section">
-    <span class="hero-chip">✨ Procesamiento 100% Local & Seguro</span>
-    <h2 class="hero-title">Convierte listados masivos en reportes ejecutivos</h2>
-    <p class="hero-subtitle">Arrastra tus archivos de producción para estructurar folios por Centro de Reparto y generar dashboards automáticos en segundos.</p>
+    <span class="hero-chip">
+      <svg class="svg-motion-pulse" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Panel Personal · Juan
+    </span>
+    <h2 class="hero-title" id="hero-saludo">¡Hola Juan! Tu espacio de trabajo está listo</h2>
+    <p class="hero-subtitle">Arrastra tus archivos de producción para estructurar folios por Centro de Reparto, calcular totales y descargar tus reportes en segundos.</p>
   </section>
 
   <!-- AirDrop Style Dropzone -->
@@ -70,7 +87,7 @@
     
     <div class="dropzone-inner">
       <div class="dropzone-icon-pulse" aria-hidden="true">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="svg-motion-bob" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="17 8 12 3 7 8"/>
           <line x1="12" y1="3" x2="12" y2="15"/>
@@ -83,18 +100,21 @@
       
       <div class="file-pills">
         <span class="file-pill">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          <svg class="svg-motion-wiggle" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
           .xlsx
         </span>
         <span class="file-pill">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          <svg class="svg-motion-wiggle" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
           .xlsm
         </span>
         <span class="file-pill">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          <svg class="svg-motion-wiggle" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
           .csv
         </span>
-        <span class="file-pill highlight-pill">⚡ Multihilo local</span>
+        <span class="file-pill highlight-pill">
+          <svg class="svg-motion-pulse" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Multihilo local
+        </span>
       </div>
     </div>
   </section>
@@ -103,7 +123,7 @@
   <details class="advanced-card">
     <summary>
       <div class="summary-left">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg class="svg-motion-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="3"/>
           <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
         </svg>
@@ -142,7 +162,7 @@
 
       <div class="queue-header-actions">
         <button type="button" id="btn-limpiar" class="btn-apple btn-apple-ghost">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          <svg class="svg-motion-wiggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           Limpiar
         </button>
       </div>
@@ -156,7 +176,7 @@
     <div class="features-grid">
       <div class="feature-apple-card">
         <div class="feature-icon-badge" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="svg-motion-pulse" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
           </svg>
         </div>
@@ -166,7 +186,7 @@
 
       <div class="feature-apple-card">
         <div class="feature-icon-badge" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="svg-motion-float" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
@@ -177,7 +197,7 @@
 
       <div class="feature-apple-card">
         <div class="feature-icon-badge" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg class="svg-motion-wiggle" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="20" x2="18" y2="10"/>
             <line x1="12" y1="20" x2="12" y2="4"/>
             <line x1="6" y1="20" x2="6" y2="14"/>
@@ -197,7 +217,7 @@
     <header class="modal-header">
       <div class="modal-title-group">
         <div class="modal-icon-badge">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          <svg class="svg-motion-float" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         </div>
         <div>
           <h3 id="modal-filename">Nombre_Archivo.xlsx</h3>
@@ -205,7 +225,7 @@
         </div>
       </div>
       <button type="button" id="modal-cerrar" class="modal-close-btn" aria-label="Cerrar vista previa">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <svg class="svg-motion-wiggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </header>
 
@@ -223,16 +243,16 @@
       <!-- Search bar inside modal -->
       <div class="modal-toolbar">
         <div class="modal-search-box">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg class="svg-motion-pulse" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" id="modal-buscar" placeholder="Filtrar por nombre de CR o Folio...">
         </div>
         <div class="modal-actions">
           <button type="button" id="modal-btn-copiar" class="btn-apple btn-apple-ghost">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <svg class="svg-motion-wiggle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             Copiar Tabla
           </button>
           <button type="button" id="modal-btn-csv" class="btn-apple btn-apple-ghost">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <svg class="svg-motion-wiggle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             Exportar CSV
           </button>
         </div>
@@ -258,12 +278,12 @@
     <footer class="modal-footer">
       <span id="modal-registro-count">Mostrando 0 registros</span>
       <div style="display:flex; gap:10px;">
-        <button type="button" id="modal-btn-pdf" class="btn-apple" style="background:#ff3b30; color:white; border:none; padding:8px 16px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:6px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        <button type="button" id="modal-btn-pdf" class="btn-apple" style="background:#f43f5e; color:white; border:none; padding:10px 20px;">
+          <svg class="svg-motion-wiggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:6px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
           Descargar Reporte PDF
         </button>
         <a id="modal-btn-descargar-excel" href="#" download="" class="btn-apple btn-apple-primary">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <svg class="svg-motion-wiggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="margin-right:6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Descargar Excel Completo (.xlsx)
         </a>
       </div>

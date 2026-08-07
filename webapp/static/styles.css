@@ -1,93 +1,435 @@
 /* ==========================================================================
-   RESUMEN CR PRO 2.0 — APPLE UI & MOTION GRAPHICS DESIGN SYSTEM
+   RESUMEN CR PRO 2.0 — CLAYMORPHISM 3D DESIGN SYSTEM & FRAMER MOTION GRAPHICS
+   Plump, tactile, ultra-clean clay surfaces, extruded buttons, sunken insets,
+   dynamic random color palettes, and Framer-Motion spring SVG animations.
    ========================================================================== */
 
 :root {
-  /* Fonts */
-  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  /* Typography */
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Apple Light Palette */
-  --bg-page: #f5f5f7;
-  --bg-card: rgba(255, 255, 255, 0.76);
-  --bg-card-solid: #ffffff;
-  --bg-card-hover: rgba(255, 255, 255, 0.92);
-  --bg-header: rgba(245, 245, 247, 0.82);
-  --bg-input: rgba(0, 0, 0, 0.04);
-  --bg-input-focus: #ffffff;
-  
-  --glass-border: rgba(0, 0, 0, 0.08);
-  --glass-border-hover: rgba(0, 113, 227, 0.3);
-  --glass-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05), 0 2px 8px -1px rgba(0, 0, 0, 0.03);
-  --glass-shadow-lg: 0 20px 40px -10px rgba(0, 0, 0, 0.1), 0 8px 16px -4px rgba(0, 0, 0, 0.04);
-  
-  --apple-blue: #0071e3;
-  --apple-blue-hover: #0077ed;
-  --apple-blue-glow: rgba(0, 113, 227, 0.22);
-  --apple-blue-soft: rgba(0, 113, 227, 0.08);
-  
-  --apple-cyan: #32ade6;
-  --apple-indigo: #5856d6;
-  --apple-purple: #af52de;
-  --apple-green: #34c759;
-  --apple-green-soft: rgba(52, 199, 89, 0.1);
-  --apple-red: #ff3b30;
-  --apple-red-soft: rgba(255, 59, 48, 0.1);
-  --apple-amber: #ff9500;
-  --apple-amber-soft: rgba(255, 149, 0, 0.1);
+  /* Claymorphism Light Palette (Warm Matte Ceramic & Soft Clay) */
+  --bg-page: #ebf0f7;
+  --bg-page-gradient: radial-gradient(circle at 50% -10%, #f7faff 0%, #ebf0f7 60%, #e2e9f3 100%);
+  --bg-card: #eef3f9;
+  --bg-card-solid: #f4f8fc;
+  --bg-card-hover: #f9fbfe;
+  --bg-header: rgba(235, 240, 247, 0.88);
+  --bg-input: #e4edf6;
+  --bg-input-focus: #f7faff;
 
-  --text-primary: #1d1d1f;
-  --text-secondary: #6e6e73;
-  --text-tertiary: #86868b;
+  /* Clay Extrusions (Raised / Salidos 3D Shadows) */
+  --clay-shadow-sm: 4px 5px 12px rgba(160, 175, 198, 0.55), -3px -3px 10px rgba(255, 255, 255, 0.95), inset 1px 1px 2px rgba(255, 255, 255, 0.85), inset -1px -1px 2px rgba(160, 175, 198, 0.2);
+  --clay-shadow-md: 8px 12px 24px rgba(150, 168, 194, 0.55), -7px -7px 18px rgba(255, 255, 255, 0.95), inset 2px 2px 4px rgba(255, 255, 255, 0.9), inset -2px -2px 4px rgba(150, 168, 194, 0.25);
+  --clay-shadow-lg: 14px 18px 36px rgba(140, 160, 188, 0.6), -10px -10px 26px rgba(255, 255, 255, 1), inset 3px 3px 6px rgba(255, 255, 255, 0.95), inset -3px -3px 6px rgba(140, 160, 188, 0.3);
+  --clay-shadow-xl: 20px 28px 52px rgba(135, 155, 184, 0.65), -14px -14px 34px rgba(255, 255, 255, 1), inset 4px 4px 8px rgba(255, 255, 255, 0.95), inset -4px -4px 8px rgba(135, 155, 184, 0.35);
+  --clay-shadow-hover: 12px 18px 30px rgba(135, 155, 184, 0.65), -9px -9px 22px rgba(255, 255, 255, 1), inset 2px 2px 5px rgba(255, 255, 255, 0.95), inset -2px -2px 5px rgba(135, 155, 184, 0.25);
 
-  --radius-sm: 10px;
-  --radius-md: 16px;
-  --radius-lg: 24px;
-  --radius-xl: 32px;
+  /* Clay Insets (Sunken / Hundidos 3D Grooves) */
+  --clay-inset-sm: inset 3px 3px 7px rgba(150, 168, 194, 0.65), inset -3px -3px 7px rgba(255, 255, 255, 0.95);
+  --clay-inset-md: inset 5px 5px 12px rgba(145, 162, 188, 0.7), inset -5px -5px 12px rgba(255, 255, 255, 0.98);
+  --clay-inset-lg: inset 8px 8px 18px rgba(140, 158, 184, 0.75), inset -8px -8px 18px rgba(255, 255, 255, 1);
+
+  /* Default Dynamic Accent: Cobalt Blue Clay */
+  --clay-blue: #3b82f6;
+  --clay-blue-dark: #2563eb;
+  --clay-blue-light: #60a5fa;
+  --clay-blue-glow: rgba(59, 130, 246, 0.38);
+  --clay-blue-soft: rgba(59, 130, 246, 0.13);
+  --btn-primary-bg: linear-gradient(145deg, #4f7df9 0%, #2563eb 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(37, 99, 235, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(37, 99, 235, 0.25);
+
+  /* Secondary Accents */
+  --clay-indigo: #4f46e5;
+  --clay-purple: #8b5cf6;
+  --clay-purple-soft: rgba(139, 92, 246, 0.14);
+  --clay-green: #10b981;
+  --clay-green-dark: #059669;
+  --clay-green-soft: rgba(16, 185, 129, 0.14);
+  --clay-green-glow: rgba(16, 185, 129, 0.35);
+  --clay-red: #f43f5e;
+  --clay-red-dark: #e11d48;
+  --clay-red-soft: rgba(244, 63, 94, 0.14);
+  --clay-red-glow: rgba(244, 63, 94, 0.35);
+  --clay-amber: #f59e0b;
+  --clay-amber-dark: #d97706;
+  --clay-amber-soft: rgba(245, 158, 11, 0.14);
+  --clay-cyan: #06b6d4;
+
+  /* Typography & Neutral Accents */
+  --text-primary: #1e293b;
+  --text-secondary: #5a6e85;
+  --text-tertiary: #8ea1b8;
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-border-hover: rgba(59, 130, 246, 0.4);
+
+  /* Radii */
+  --radius-xs: 8px;
+  --radius-sm: 14px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-xl: 36px;
   --radius-pill: 9999px;
 
-  --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-spring: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Framer-Motion Spring Physics Curves */
+  --spring-bounce: 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-snappy: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-elastic: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --transition-fast: 0.18s ease;
 }
 
+/* ==========================================================================
+   DYNAMIC RANDOM CLAY COLOR PALETTE VARIANTS
+   ========================================================================== */
+
+/* 1. Emerald Green Clay (Verde Esmeralda) */
+[data-clay-color="green"] {
+  --clay-blue: #10b981;
+  --clay-blue-dark: #059669;
+  --clay-blue-light: #34d399;
+  --clay-blue-glow: rgba(16, 185, 129, 0.38);
+  --clay-blue-soft: rgba(16, 185, 129, 0.13);
+  --glass-border-hover: rgba(16, 185, 129, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #34d399 0%, #059669 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(5, 150, 105, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(5, 150, 105, 0.25);
+}
+
+/* 2. Ruby Coral Red Clay (Rojo Rubí / Coral) */
+[data-clay-color="red"] {
+  --clay-blue: #f43f5e;
+  --clay-blue-dark: #e11d48;
+  --clay-blue-light: #fb7185;
+  --clay-blue-glow: rgba(244, 63, 94, 0.38);
+  --clay-blue-soft: rgba(244, 63, 94, 0.13);
+  --glass-border-hover: rgba(244, 63, 94, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #fb7185 0%, #e11d48 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(225, 29, 72, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(225, 29, 72, 0.25);
+}
+
+/* 3. Solar Amber Clay (Amarillo Ámbar / Oro) */
+[data-clay-color="amber"] {
+  --clay-blue: #f59e0b;
+  --clay-blue-dark: #d97706;
+  --clay-blue-light: #fbbf24;
+  --clay-blue-glow: rgba(245, 158, 11, 0.38);
+  --clay-blue-soft: rgba(245, 158, 11, 0.13);
+  --glass-border-hover: rgba(245, 158, 11, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(217, 119, 6, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(217, 119, 6, 0.25);
+}
+
+/* 4. Electric Violet Clay (Púrpura / Violeta Eléctrico) */
+[data-clay-color="purple"] {
+  --clay-blue: #8b5cf6;
+  --clay-blue-dark: #7c3aed;
+  --clay-blue-light: #a78bfa;
+  --clay-blue-glow: rgba(139, 92, 246, 0.38);
+  --clay-blue-soft: rgba(139, 92, 246, 0.13);
+  --glass-border-hover: rgba(139, 92, 246, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #a78bfa 0%, #7c3aed 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(124, 58, 237, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(124, 58, 237, 0.25);
+}
+
+/* 5. Cyan Breeze Clay (Cian Turquesa) */
+[data-clay-color="cyan"] {
+  --clay-blue: #06b6d4;
+  --clay-blue-dark: #0891b2;
+  --clay-blue-light: #22d3ee;
+  --clay-blue-glow: rgba(6, 182, 212, 0.38);
+  --clay-blue-soft: rgba(6, 182, 212, 0.13);
+  --glass-border-hover: rgba(6, 182, 212, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #22d3ee 0%, #0891b2 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(8, 145, 178, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(8, 145, 178, 0.25);
+}
+
+/* 6. Rose Berry Clay (Rosa Fucsia) */
+[data-clay-color="pink"] {
+  --clay-blue: #ec4899;
+  --clay-blue-dark: #db2777;
+  --clay-blue-light: #f472b6;
+  --clay-blue-glow: rgba(236, 72, 153, 0.38);
+  --clay-blue-soft: rgba(236, 72, 153, 0.13);
+  --glass-border-hover: rgba(236, 72, 153, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #f472b6 0%, #db2777 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(219, 39, 119, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(219, 39, 119, 0.25);
+}
+
+/* 7. Sunset Orange Clay (Naranja Volcánico) */
+[data-clay-color="orange"] {
+  --clay-blue: #f97316;
+  --clay-blue-dark: #ea580c;
+  --clay-blue-light: #fb923c;
+  --clay-blue-glow: rgba(249, 115, 22, 0.38);
+  --clay-blue-soft: rgba(249, 115, 22, 0.13);
+  --glass-border-hover: rgba(249, 115, 22, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #fb923c 0%, #ea580c 100%);
+  --btn-primary-shadow: 6px 9px 20px rgba(234, 88, 12, 0.45), -4px -4px 10px rgba(255, 255, 255, 0.8), inset 2px 2px 4px rgba(255, 255, 255, 0.45), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.25), 2px 2px 6px rgba(234, 88, 12, 0.25);
+}
+
+/* ==========================================================================
+   CLAYMORPHISM DARK PALETTE (Dark Tactile Slate & Velvet Clay)
+   ========================================================================== */
 [data-theme="dark"] {
-  /* Apple Dark Palette */
-  --bg-page: #070709;
-  --bg-card: rgba(24, 24, 28, 0.72);
-  --bg-card-solid: #151518;
-  --bg-card-hover: rgba(35, 35, 40, 0.85);
-  --bg-header: rgba(7, 7, 9, 0.82);
-  --bg-input: rgba(255, 255, 255, 0.07);
-  --bg-input-focus: #222226;
+  --bg-page: #12151e;
+  --bg-page-gradient: radial-gradient(circle at 50% -10%, #1c2230 0%, #12151e 60%, #0d0f17 100%);
+  --bg-card: #1b202c;
+  --bg-card-solid: #202635;
+  --bg-card-hover: #262c3d;
+  --bg-header: rgba(18, 21, 30, 0.88);
+  --bg-input: #151924;
+  --bg-input-focus: #202635;
 
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-hover: rgba(10, 132, 255, 0.4);
-  --glass-shadow: 0 12px 32px -5px rgba(0, 0, 0, 0.5), 0 2px 8px -1px rgba(0, 0, 0, 0.3);
-  --glass-shadow-lg: 0 24px 48px -12px rgba(0, 0, 0, 0.75);
+  /* Dark Clay Extrusions (Raised 3D Shadows) */
+  --clay-shadow-sm: 4px 4px 10px rgba(0, 0, 0, 0.6), -3px -3px 8px rgba(45, 54, 74, 0.35), inset 1px 1px 2px rgba(255, 255, 255, 0.08), inset -1px -1px 2px rgba(0, 0, 0, 0.4);
+  --clay-shadow-md: 8px 12px 22px rgba(0, 0, 0, 0.7), -6px -6px 16px rgba(45, 54, 74, 0.35), inset 2px 2px 4px rgba(255, 255, 255, 0.09), inset -2px -2px 4px rgba(0, 0, 0, 0.5);
+  --clay-shadow-lg: 12px 18px 32px rgba(0, 0, 0, 0.8), -8px -8px 22px rgba(45, 54, 74, 0.4), inset 3px 3px 6px rgba(255, 255, 255, 0.1), inset -3px -3px 6px rgba(0, 0, 0, 0.6);
+  --clay-shadow-xl: 18px 26px 46px rgba(0, 0, 0, 0.9), -12px -12px 30px rgba(45, 54, 74, 0.45), inset 4px 4px 8px rgba(255, 255, 255, 0.12), inset -4px -4px 8px rgba(0, 0, 0, 0.7);
+  --clay-shadow-hover: 10px 16px 28px rgba(0, 0, 0, 0.8), -7px -7px 18px rgba(55, 65, 90, 0.4), inset 2px 2px 4px rgba(255, 255, 255, 0.12), inset -2px -2px 4px rgba(0, 0, 0, 0.5);
 
-  --apple-blue: #0a84ff;
-  --apple-blue-hover: #409cff;
-  --apple-blue-glow: rgba(10, 132, 255, 0.35);
-  --apple-blue-soft: rgba(10, 132, 255, 0.15);
+  /* Dark Clay Insets (Sunken 3D Grooves) */
+  --clay-inset-sm: inset 3px 3px 7px rgba(0, 0, 0, 0.75), inset -2px -2px 6px rgba(45, 54, 74, 0.25);
+  --clay-inset-md: inset 5px 5px 12px rgba(0, 0, 0, 0.85), inset -4px -4px 9px rgba(45, 54, 74, 0.3);
+  --clay-inset-lg: inset 8px 8px 18px rgba(0, 0, 0, 0.9), inset -6px -6px 14px rgba(45, 54, 74, 0.35);
 
-  --apple-cyan: #64d2ff;
-  --apple-indigo: #5e5ce6;
-  --apple-purple: #bf5af2;
-  --apple-green: #30d158;
-  --apple-green-soft: rgba(48, 209, 88, 0.18);
-  --apple-red: #ff453a;
-  --apple-red-soft: rgba(255, 69, 58, 0.18);
-  --apple-amber: #ffd60a;
-  --apple-amber-soft: rgba(255, 214, 10, 0.18);
+  /* Dark Clay Default Accent */
+  --clay-blue: #60a5fa;
+  --clay-blue-dark: #3b82f6;
+  --clay-blue-light: #93c5fd;
+  --clay-blue-glow: rgba(96, 165, 250, 0.35);
+  --clay-blue-soft: rgba(96, 165, 250, 0.15);
 
-  --text-primary: #f5f5f7;
-  --text-secondary: #98989d;
-  --text-tertiary: #6e6e73;
+  --btn-primary-bg: linear-gradient(145deg, #6085fa 0%, #3d63ea 100%);
+  --btn-primary-shadow: 6px 10px 22px rgba(61, 99, 234, 0.5), -3px -3px 8px rgba(255, 255, 255, 0.1), inset 2px 2px 4px rgba(255, 255, 255, 0.35), inset -2px -2px 5px rgba(0, 0, 0, 0.4);
+  --btn-primary-active: inset 4px 4px 9px rgba(0, 0, 0, 0.5), inset -2px -2px 6px rgba(255, 255, 255, 0.15), 2px 2px 6px rgba(61, 99, 234, 0.3);
+
+  /* Dark Typography & Borders */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(96, 165, 250, 0.4);
 }
 
-/* ------------------------------------------------------------------
-   GLOBAL RESETS
-   ------------------------------------------------------------------ */
+[data-theme="dark"][data-clay-color="green"] {
+  --clay-blue: #34d399;
+  --clay-blue-dark: #10b981;
+  --clay-blue-light: #6ee7b7;
+  --clay-blue-glow: rgba(52, 211, 153, 0.38);
+  --clay-blue-soft: rgba(52, 211, 153, 0.15);
+  --glass-border-hover: rgba(52, 211, 153, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #34d399 0%, #059669 100%);
+}
+
+[data-theme="dark"][data-clay-color="red"] {
+  --clay-blue: #fb7185;
+  --clay-blue-dark: #f43f5e;
+  --clay-blue-light: #fda4af;
+  --clay-blue-glow: rgba(251, 113, 133, 0.38);
+  --clay-blue-soft: rgba(251, 113, 133, 0.15);
+  --glass-border-hover: rgba(251, 113, 133, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #fb7185 0%, #e11d48 100%);
+}
+
+[data-theme="dark"][data-clay-color="amber"] {
+  --clay-blue: #fbbf24;
+  --clay-blue-dark: #f59e0b;
+  --clay-blue-light: #fde68a;
+  --clay-blue-glow: rgba(251, 191, 36, 0.38);
+  --clay-blue-soft: rgba(251, 191, 36, 0.15);
+  --glass-border-hover: rgba(251, 191, 36, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #fbbf24 0%, #d97706 100%);
+}
+
+[data-theme="dark"][data-clay-color="purple"] {
+  --clay-blue: #c084fc;
+  --clay-blue-dark: #8b5cf6;
+  --clay-blue-light: #e9d5ff;
+  --clay-blue-glow: rgba(192, 132, 252, 0.38);
+  --clay-blue-soft: rgba(192, 132, 252, 0.15);
+  --glass-border-hover: rgba(192, 132, 252, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #c084fc 0%, #7c3aed 100%);
+}
+
+[data-theme="dark"][data-clay-color="cyan"] {
+  --clay-blue: #38bdf8;
+  --clay-blue-dark: #06b6d4;
+  --clay-blue-light: #bae6fd;
+  --clay-blue-glow: rgba(56, 189, 248, 0.38);
+  --clay-blue-soft: rgba(56, 189, 248, 0.15);
+  --glass-border-hover: rgba(56, 189, 248, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #38bdf8 0%, #0891b2 100%);
+}
+
+[data-theme="dark"][data-clay-color="pink"] {
+  --clay-blue: #f472b6;
+  --clay-blue-dark: #ec4899;
+  --clay-blue-light: #fbcfe8;
+  --clay-blue-glow: rgba(244, 114, 182, 0.38);
+  --clay-blue-soft: rgba(244, 114, 182, 0.15);
+  --glass-border-hover: rgba(244, 114, 182, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #f472b6 0%, #db2777 100%);
+}
+
+[data-theme="dark"][data-clay-color="orange"] {
+  --clay-blue: #fb923c;
+  --clay-blue-dark: #f97316;
+  --clay-blue-light: #fed7aa;
+  --clay-blue-glow: rgba(251, 146, 60, 0.38);
+  --clay-blue-soft: rgba(251, 146, 60, 0.15);
+  --glass-border-hover: rgba(251, 146, 60, 0.4);
+  --btn-primary-bg: linear-gradient(145deg, #fb923c 0%, #ea580c 100%);
+}
+
+/* ==========================================================================
+   FRAMER MOTION & ELASTIC SQUISH & STRETCH (GELATINA 3D) PHYSICS
+   Pure SVG Spring Physics, Breathing, Levitation, Rubberband Jiggle
+   ========================================================================== */
+
+/* 1. Smooth Spring Floating */
+.svg-motion-float {
+  animation: framer-float 3.6s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes framer-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(2deg);
+  }
+}
+
+/* 2. Organic Scale Breathing */
+.svg-motion-pulse {
+  animation: framer-pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: center center;
+}
+
+@keyframes framer-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.9;
+  }
+}
+
+/* 3. Spring Bobbing (for Dropzone Arrow) */
+.svg-motion-bob {
+  animation: framer-bob 2.2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite;
+  transform-origin: center center;
+}
+
+@keyframes framer-bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* 4. Tactile Spring Wiggle on Hover */
+.svg-motion-wiggle {
+  transition: transform var(--spring-bounce);
+  transform-origin: center center;
+}
+
+*:hover > .svg-motion-wiggle,
+.svg-motion-wiggle:hover {
+  animation: framer-wiggle 0.5s ease-in-out;
+}
+
+@keyframes framer-wiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-10deg) scale(1.15); }
+  75% { transform: rotate(10deg) scale(1.15); }
+}
+
+/* 5. Smooth Slow Continuous Spin (Gears / Processors) */
+.svg-motion-spin {
+  animation: framer-spin 12s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes framer-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 6. Stroke Draw Animation */
+*:hover > .svg-motion-draw path,
+*:hover > .svg-motion-draw polyline,
+*:hover > .svg-motion-draw line {
+  animation: framer-draw 0.8s ease-in-out forwards;
+}
+
+@keyframes framer-draw {
+  0% { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* 7. Elastic Squish & Stretch (Gelatina 3D) Rubberband Physics */
+.dropzone-apple.squash-drag {
+  transform: scale(0.97, 1.03) translateY(-6px) !important;
+  border-color: var(--clay-blue) !important;
+  background: var(--bg-card-solid) !important;
+  box-shadow: var(--clay-shadow-xl), 0 0 0 8px var(--clay-blue-glow) !important;
+  animation: clay-gelatina-jiggle 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) infinite alternate;
+}
+
+@keyframes clay-gelatina-jiggle {
+  0% { transform: scale(0.97, 1.03) translateY(-6px); }
+  50% { transform: scale(1.03, 0.97) translateY(2px); }
+  100% { transform: scale(0.98, 1.02) translateY(-3px); }
+}
+
+.dropzone-apple.squash-bounce {
+  animation: clay-gelatina-bounce 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes clay-gelatina-bounce {
+  0% { transform: scale(1.08, 0.91) translateY(8px); }
+  35% { transform: scale(0.93, 1.07) translateY(-9px); }
+  65% { transform: scale(1.03, 0.97) translateY(4px); }
+  85% { transform: scale(0.99, 1.01) translateY(-1px); }
+  100% { transform: scale(1, 1) translateY(0); }
+}
+
+/* Tactile Elastic Button Press */
+.btn-apple:active,
+.palette-shuffle-btn:active,
+.theme-pill-btn:active,
+.preset-chip:active,
+.modal-close-btn:active {
+  transform: scale(0.93, 0.91) translateY(5px) !important;
+  transition: transform 0.08s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.btn-spring-release {
+  animation: clay-spring-release 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes clay-spring-release {
+  0% { transform: scale(0.93, 0.91) translateY(5px); }
+  50% { transform: scale(1.06, 1.04) translateY(-3px); }
+  100% { transform: scale(1, 1) translateY(0); }
+}
+
+/* ==========================================================================
+   GLOBAL RESETS & CLAY CANVAS
+   ========================================================================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -102,86 +444,100 @@ html {
 body {
   font-family: var(--font-main);
   background-color: var(--bg-page);
+  background-image: var(--bg-page-gradient);
+  background-attachment: fixed;
   color: var(--text-primary);
-  line-height: 1.5;
-  font-weight: 400;
-  letter-spacing: -0.015em;
+  line-height: 1.55;
+  font-weight: 500;
+  letter-spacing: -0.012em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Ambient Motion Gradient Background Glow */
+/* Subtle clay ambient glow behind the main container */
 .ambient-glow {
   position: fixed;
-  top: -250px;
+  top: -200px;
   left: 50%;
   transform: translateX(-50%);
-  width: 1200px;
-  height: 650px;
-  background: radial-gradient(circle, var(--apple-blue-glow) 0%, rgba(88, 86, 214, 0.12) 40%, transparent 75%);
+  width: 1100px;
+  height: 600px;
+  background: radial-gradient(circle, var(--clay-blue-glow) 0%, rgba(99, 102, 241, 0.12) 45%, transparent 75%);
   pointer-events: none;
   z-index: 0;
-  filter: blur(80px);
+  filter: blur(90px);
+  opacity: 0.75;
+  transition: background 0.5s ease;
 }
 
 code {
   font-family: var(--font-mono);
-  font-size: 0.85em;
-  padding: 2px 7px;
-  border-radius: 6px;
-  background: var(--apple-blue-soft);
-  color: var(--apple-blue);
-  font-weight: 600;
+  font-size: 0.86em;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-input);
+  box-shadow: var(--clay-inset-sm);
+  color: var(--clay-blue);
+  font-weight: 700;
+  display: inline-block;
+  transition: color 0.4s ease;
 }
 
-/* ------------------------------------------------------------------
-   HEADER & NAVIGATION
-   ------------------------------------------------------------------ */
+/* ==========================================================================
+   HEADER & FLOATING CLAY BAR
+   ========================================================================== */
 .header-glass {
   position: sticky;
-  top: 0;
+  top: 14px;
   z-index: 100;
-  background: var(--bg-header);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid var(--glass-border);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
 .header-container {
-  max-width: 1060px;
-  margin: 0 auto;
-  padding: 14px 24px;
+  background: var(--bg-header);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--clay-shadow-md);
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid var(--glass-border);
+  transition: all var(--spring-bounce);
 }
 
 .brand-wrapper {
   display: flex;
   align-items: center;
   gap: 14px;
+  cursor: default;
 }
 
+/* 3D Tactile Clay Logo Icon with Framer Motion Levitation */
 .brand-icon-motion {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-indigo) 100%);
+  background: linear-gradient(135deg, var(--clay-blue) 0%, var(--clay-indigo) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
-  box-shadow: 0 8px 22px -4px var(--apple-blue-glow);
-  transition: transform var(--transition-spring);
+  box-shadow: 4px 6px 14px var(--clay-blue-glow), inset 2px 2px 3px rgba(255, 255, 255, 0.45), inset -2px -2px 3px rgba(0, 0, 0, 0.25);
+  transition: transform var(--spring-bounce), box-shadow var(--spring-bounce), background 0.4s ease;
 }
 
 .brand-wrapper:hover .brand-icon-motion {
-  transform: scale(1.08) rotate(-3deg);
+  transform: scale(1.12) rotate(-4deg) translateY(-2px);
+  box-shadow: 6px 10px 20px var(--clay-blue-glow), inset 2px 2px 4px rgba(255, 255, 255, 0.55), inset -2px -2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .brand-info h1 {
@@ -199,11 +555,12 @@ code {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  padding: 3px 9px;
+  padding: 3px 10px;
   border-radius: var(--radius-pill);
-  background: linear-gradient(135deg, var(--apple-blue-soft), rgba(88, 86, 214, 0.15));
-  color: var(--apple-blue);
-  border: 1px solid rgba(0, 113, 227, 0.25);
+  background: var(--bg-input);
+  box-shadow: var(--clay-inset-sm);
+  color: var(--clay-blue);
+  transition: color 0.4s ease;
 }
 
 .brand-info p {
@@ -215,105 +572,153 @@ code {
 .header-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
+/* Clay Status Pill */
 .engine-status-pill {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-  background: var(--apple-green-soft);
-  border: 1px solid rgba(52, 199, 89, 0.25);
-  color: var(--apple-green);
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.pulse-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: var(--apple-green);
-  box-shadow: 0 0 10px var(--apple-green);
-  animation: pulse-ring 2s infinite ease-in-out;
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.25); opacity: 1; }
-  100% { transform: scale(0.95); opacity: 0.8; }
-}
-
-.theme-pill-btn {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 7px 16px;
   border-radius: var(--radius-pill);
   background: var(--bg-card);
+  box-shadow: var(--clay-shadow-sm);
+  color: var(--clay-green);
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--glass-border);
+}
+
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--clay-green);
+  box-shadow: 0 0 10px var(--clay-green-glow);
+  animation: pulse-ring 2s infinite ease-in-out;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.8; }
+}
+
+/* Palette Shuffle Pill Button */
+.palette-shuffle-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  color: var(--clay-blue);
+  font-size: 12px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--clay-shadow-sm);
+  transition: all var(--spring-snappy);
+  user-select: none;
+}
+
+.palette-shuffle-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: var(--clay-shadow-md);
+}
+
+.palette-shuffle-btn:active {
+  transform: translateY(2px) scale(0.96);
+  box-shadow: var(--clay-inset-sm);
+}
+
+/* Clay Extruded / Sunken Theme Switch */
+.theme-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-card);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
-  box-shadow: var(--glass-shadow);
-  transition: var(--transition-fast);
-  backdrop-filter: blur(12px);
+  box-shadow: var(--clay-shadow-sm);
+  transition: all var(--spring-snappy);
+  user-select: none;
 }
 
 .theme-pill-btn:hover {
-  background: var(--bg-card-hover);
-  transform: translateY(-1px);
-  border-color: var(--glass-border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-md);
+  color: var(--clay-blue);
 }
 
 .theme-pill-btn:active {
-  transform: scale(0.96);
+  transform: translateY(2px) scale(0.96);
+  box-shadow: var(--clay-inset-sm);
 }
 
-/* ------------------------------------------------------------------
-   MAIN CONTAINER
-   ------------------------------------------------------------------ */
+.icono-tema {
+  font-size: 14px;
+  transition: transform var(--spring-bounce);
+}
+
+.theme-pill-btn:hover .icono-tema {
+  transform: rotate(15deg) scale(1.15);
+}
+
+/* ==========================================================================
+   MAIN LAYOUT & HERO
+   ========================================================================== */
 .main-layout {
-  max-width: 920px;
+  max-width: 940px;
   margin: 0 auto;
-  padding: 40px 24px 80px;
+  padding: 44px 20px 80px;
   position: relative;
   z-index: 1;
 }
 
-/* Hero Section */
 .hero-section {
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 34px;
 }
 
+/* Floating 3D Clay Chip */
 .hero-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 14px;
+  gap: 8px;
+  padding: 7px 18px;
   border-radius: var(--radius-pill);
   background: var(--bg-card);
-  border: 1px solid var(--glass-border);
+  box-shadow: var(--clay-shadow-sm);
   font-size: 12px;
-  font-weight: 700;
-  color: var(--apple-blue);
-  margin-bottom: 14px;
-  box-shadow: var(--glass-shadow);
+  font-weight: 800;
+  color: var(--clay-blue);
+  margin-bottom: 16px;
+  border: 1px solid var(--glass-border);
+  animation: float-chip 3.5s ease-in-out infinite;
+  transition: color 0.4s ease;
+}
+
+@keyframes float-chip {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-4px); }
 }
 
 .hero-title {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 800;
   letter-spacing: -0.035em;
-  line-height: 1.2;
-  background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 10px;
+  line-height: 1.22;
+  color: var(--text-primary);
+  margin-bottom: 12px;
 }
 
 .hero-subtitle {
@@ -321,161 +726,158 @@ code {
   color: var(--text-secondary);
   max-width: 640px;
   margin: 0 auto;
+  line-height: 1.6;
 }
 
-/* ------------------------------------------------------------------
-   APPLE DROP ZONE
-   ------------------------------------------------------------------ */
+/* ==========================================================================
+   CLAY AIRDROP DROPZONE (Plump, Tactile 3D Vault)
+   ========================================================================== */
 .dropzone-apple {
   position: relative;
   background: var(--bg-card);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
-  border: 2px dashed var(--glass-border);
   border-radius: var(--radius-xl);
-  padding: 56px 36px;
+  padding: 54px 36px;
   text-align: center;
   cursor: pointer;
-  box-shadow: var(--glass-shadow-lg);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--clay-shadow-lg);
+  border: 2px dashed rgba(160, 175, 198, 0.4);
+  transition: all var(--spring-bounce);
   overflow: hidden;
-  margin-bottom: 28px;
-}
-
-.dropzone-apple::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, var(--apple-blue-soft) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
+  margin-bottom: 32px;
 }
 
 .dropzone-apple:hover {
-  border-color: var(--apple-blue);
-  transform: translateY(-3px);
-  box-shadow: 0 24px 50px -12px var(--apple-blue-glow), var(--glass-shadow-lg);
-}
-
-.dropzone-apple:hover::before {
-  opacity: 1;
+  transform: translateY(-4px);
+  box-shadow: var(--clay-shadow-xl);
+  border-color: var(--clay-blue);
 }
 
 .dropzone-apple.highlight {
   border-style: solid;
-  border-color: var(--apple-blue);
+  border-color: var(--clay-blue);
   background: var(--bg-card-solid);
-  box-shadow: 0 0 0 6px var(--apple-blue-glow), var(--glass-shadow-lg);
+  box-shadow: var(--clay-inset-md), 0 0 0 6px var(--clay-blue-glow);
   transform: scale(1.015);
 }
 
+.dropzone-apple:focus-visible {
+  outline: none;
+  box-shadow: var(--clay-shadow-xl), 0 0 0 4px var(--clay-blue-glow);
+}
+
+/* 3D Tactile Pulsing Clay Medallion */
 .dropzone-icon-pulse {
-  width: 68px;
-  height: 68px;
-  margin: 0 auto 20px;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 22px;
   border-radius: 50%;
-  background: var(--apple-blue-soft);
-  color: var(--apple-blue);
+  background: linear-gradient(145deg, var(--clay-blue-light), var(--clay-blue-dark));
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 0 var(--apple-blue-glow);
-  animation: pulse-glow 2.5s infinite;
-  transition: transform var(--transition-spring);
+  box-shadow: 6px 10px 22px var(--clay-blue-glow), inset 2px 2px 4px rgba(255, 255, 255, 0.5), inset -2px -2px 4px rgba(0, 0, 0, 0.25);
+  animation: clay-pulse 3s infinite ease-in-out;
+  transition: transform var(--spring-bounce), background 0.4s ease;
 }
 
 .dropzone-apple:hover .dropzone-icon-pulse {
-  transform: scale(1.12);
+  transform: scale(1.15) rotate(5deg);
+  animation-play-state: paused;
 }
 
-@keyframes pulse-glow {
-  0% { box-shadow: 0 0 0 0 var(--apple-blue-glow); }
-  70% { box-shadow: 0 0 0 16px rgba(0, 113, 227, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(0, 113, 227, 0); }
+@keyframes clay-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 6px 10px 22px var(--clay-blue-glow), inset 2px 2px 4px rgba(255, 255, 255, 0.5), inset -2px -2px 4px rgba(0, 0, 0, 0.25); }
+  50% { transform: scale(1.06); box-shadow: 10px 16px 30px var(--clay-blue-glow), inset 3px 3px 5px rgba(255, 255, 255, 0.6), inset -2px -2px 4px rgba(0, 0, 0, 0.2); }
 }
 
 .dropzone-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 21px;
+  font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .dropzone-subtitle {
   font-size: 14px;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 26px;
 }
 
 .dropzone-btn-inline {
   background: none;
   border: none;
-  color: var(--apple-blue);
-  font-weight: 700;
+  color: var(--clay-blue);
+  font-weight: 800;
   font-size: inherit;
   font-family: inherit;
   cursor: pointer;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 4px;
+  transition: color var(--transition-fast);
 }
 
 .dropzone-btn-inline:hover {
-  color: var(--apple-blue-hover);
+  color: var(--clay-blue-dark);
 }
 
 .file-pills {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
+/* Clay File Pills */
 .file-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 14px;
+  padding: 6px 16px;
   border-radius: var(--radius-pill);
   background: var(--bg-input);
   color: var(--text-secondary);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
+  box-shadow: var(--clay-inset-sm);
   border: 1px solid var(--glass-border);
+  transition: transform var(--transition-fast), color 0.4s ease;
+}
+
+.file-pill:hover {
+  transform: translateY(-1px);
 }
 
 .highlight-pill {
-  background: var(--apple-blue-soft);
-  color: var(--apple-blue);
-  border-color: rgba(0, 113, 227, 0.25);
-  font-weight: 700;
+  background: var(--clay-blue-soft);
+  color: var(--clay-blue);
+  font-weight: 800;
+  box-shadow: var(--clay-shadow-sm);
 }
 
-/* ------------------------------------------------------------------
-   ADVANCED OPTIONS CARD
-   ------------------------------------------------------------------ */
+/* ==========================================================================
+   ADVANCED OPTIONS CARD (Clay Collapsible Box)
+   ========================================================================== */
 .advanced-card {
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  box-shadow: var(--glass-shadow);
-  margin-bottom: 32px;
+  box-shadow: var(--clay-shadow-md);
+  margin-bottom: 34px;
   overflow: hidden;
-  transition: var(--transition-fast);
+  border: 1px solid var(--glass-border);
+  transition: box-shadow var(--spring-snappy), transform var(--spring-snappy);
 }
 
 .advanced-card[open] {
-  border-color: var(--glass-border-hover);
-  box-shadow: var(--glass-shadow-lg);
+  box-shadow: var(--clay-shadow-lg);
 }
 
 .advanced-card summary {
-  padding: 16px 22px;
+  padding: 18px 24px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   cursor: pointer;
   user-select: none;
@@ -486,28 +888,29 @@ code {
 }
 
 .advanced-card summary:hover {
-  background: var(--bg-input);
+  background: var(--bg-card-hover);
 }
 
 .summary-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .summary-badge {
   font-size: 12px;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .summary-badge strong {
-  color: var(--apple-blue);
-  font-weight: 700;
+  color: var(--clay-blue);
+  font-weight: 800;
+  transition: color 0.4s ease;
 }
 
 .advanced-content {
-  padding: 20px 22px 24px;
+  padding: 22px 24px 26px;
   border-top: 1px solid var(--glass-border);
   background: var(--bg-card-solid);
 }
@@ -515,78 +918,89 @@ code {
 .advanced-field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 9px;
+  margin-bottom: 18px;
 }
 
 .advanced-field label {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-primary);
 }
 
+/* Sunken Clay Input (Hundido) */
 .advanced-field input[type="text"] {
   width: 100%;
-  padding: 12px 16px;
+  padding: 13px 18px;
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   background: var(--bg-input);
+  box-shadow: var(--clay-inset-md);
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   outline: none;
-  transition: var(--transition-fast);
+  transition: box-shadow var(--spring-snappy), background var(--spring-snappy);
 }
 
 .advanced-field input[type="text"]:focus {
   background: var(--bg-input-focus);
-  border-color: var(--apple-blue);
-  box-shadow: 0 0 0 4px var(--apple-blue-glow);
+  box-shadow: var(--clay-inset-lg), 0 0 0 3px var(--clay-blue-glow);
 }
 
 .presets-wrapper {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .presets-label {
   display: block;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-secondary);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .preset-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
+/* Preset Chips (Extruded by default, Sunken when Active) */
 .preset-chip {
-  padding: 6px 14px;
+  padding: 8px 18px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--glass-border);
   background: var(--bg-card);
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: var(--transition-fast);
+  box-shadow: var(--clay-shadow-sm);
+  transition: all var(--spring-snappy);
+  user-select: none;
 }
 
 .preset-chip:hover {
   background: var(--bg-card-hover);
   color: var(--text-primary);
-  border-color: var(--apple-blue);
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-md);
+}
+
+.preset-chip:active {
+  transform: translateY(2px) scale(0.96);
+  box-shadow: var(--clay-inset-sm);
 }
 
 .preset-chip.active {
-  background: var(--apple-blue);
+  background: var(--clay-blue);
   color: #ffffff;
-  border-color: var(--apple-blue);
-  box-shadow: 0 4px 12px var(--apple-blue-glow);
+  border-color: transparent;
+  box-shadow: var(--clay-inset-sm), 0 4px 12px var(--clay-blue-glow);
+  transform: translateY(1px);
 }
 
 .advanced-note {
@@ -594,39 +1008,42 @@ code {
   color: var(--text-tertiary);
 }
 
-/* ------------------------------------------------------------------
-   QUEUE & WORK CARDS
-   ------------------------------------------------------------------ */
+/* ==========================================================================
+   QUEUE SECTION & CLAY WORK CARDS
+   ========================================================================== */
 .queue-section {
-  margin-bottom: 40px;
+  margin-bottom: 44px;
 }
 
 .queue-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .queue-title-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .queue-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.025em;
+  color: var(--text-primary);
 }
 
 .queue-counter-badge {
-  padding: 2px 10px;
+  padding: 3px 12px;
   border-radius: var(--radius-pill);
-  background: var(--apple-blue);
+  background: var(--clay-blue);
   color: #ffffff;
   font-size: 12px;
   font-weight: 800;
+  box-shadow: 2px 4px 10px var(--clay-blue-glow);
+  transition: background 0.4s ease;
 }
 
 .queue-header-actions {
@@ -638,81 +1055,84 @@ code {
 .queue-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
+/* 3D Tactile Clay Card */
 .apple-card {
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 22px 24px;
-  box-shadow: var(--glass-shadow);
-  transition: all 0.3s ease;
-  animation: slide-up 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 26px 28px;
+  box-shadow: var(--clay-shadow-lg);
+  border: 1px solid var(--glass-border);
+  transition: all var(--spring-bounce);
+  animation: clay-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes clay-slide-up {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .apple-card:hover {
-  border-color: var(--glass-border-hover);
-  box-shadow: var(--glass-shadow-lg);
+  box-shadow: var(--clay-shadow-xl);
+  transform: translateY(-2px);
 }
 
 .card-header-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .card-filename {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 700;
+  gap: 12px;
+  font-size: 17px;
+  font-weight: 800;
   color: var(--text-primary);
 }
 
+/* Clay Badges */
 .sf-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
+  gap: 7px;
+  padding: 6px 16px;
   border-radius: var(--radius-pill);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
+  box-shadow: var(--clay-shadow-sm);
+  border: 1px solid var(--glass-border);
 }
 
 .sf-badge-processing {
-  background: var(--apple-blue-soft);
-  color: var(--apple-blue);
-  border: 1px solid rgba(0, 113, 227, 0.2);
+  background: var(--clay-blue-soft);
+  color: var(--clay-blue);
+  box-shadow: var(--clay-inset-sm);
 }
 
 .sf-badge-success {
-  background: var(--apple-green-soft);
-  color: var(--apple-green);
-  border: 1px solid rgba(52, 199, 89, 0.2);
+  background: var(--clay-green-soft);
+  color: var(--clay-green);
+  box-shadow: var(--clay-shadow-sm);
 }
 
 .sf-badge-error {
-  background: var(--apple-red-soft);
-  color: var(--apple-red);
-  border: 1px solid rgba(255, 59, 48, 0.2);
+  background: var(--clay-red-soft);
+  color: var(--clay-red);
+  box-shadow: var(--clay-inset-sm);
 }
 
 .apple-spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid var(--apple-blue-glow);
-  border-top-color: var(--apple-blue);
+  border: 2.5px solid var(--clay-blue-soft);
+  border-top-color: var(--clay-blue);
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: spin 0.75s linear infinite;
 }
 
 @keyframes spin {
@@ -720,63 +1140,68 @@ code {
 }
 
 .card-error-banner {
-  padding: 12px 16px;
+  padding: 14px 18px;
   border-radius: var(--radius-md);
-  background: var(--apple-red-soft);
-  border: 1px solid rgba(255, 59, 48, 0.2);
-  color: var(--apple-red);
+  background: var(--clay-red-soft);
+  box-shadow: var(--clay-inset-sm);
+  color: var(--clay-red);
   font-size: 13px;
-  font-weight: 600;
-  margin-top: 12px;
+  font-weight: 700;
+  margin-top: 14px;
 }
 
-/* KPI Tile Grid inside card */
+/* ==========================================================================
+   KPI TILES (Chunky 3D Clay Cubes)
+   ========================================================================== */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
 .kpi-tile {
   background: var(--bg-card-solid);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  padding: 14px 16px;
+  padding: 16px 18px;
   text-align: center;
-  transition: transform var(--transition-fast);
+  box-shadow: var(--clay-shadow-sm);
+  border: 1px solid var(--glass-border);
+  transition: transform var(--spring-bounce), box-shadow var(--spring-bounce);
 }
 
 .kpi-tile:hover {
-  transform: translateY(-2px);
-  border-color: var(--apple-blue-glow);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--clay-shadow-md);
 }
 
 .kpi-val {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
-  line-height: 1.1;
-
+  line-height: 1.15;
 }
 
 .kpi-lbl {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--text-secondary);
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
-/* Chart component inside card */
+/* ==========================================================================
+   CLAY CHART BOX & HORIZONTAL BARS
+   ========================================================================== */
 .chart-container {
   background: var(--bg-card-solid);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
-  padding: 18px 20px;
-  margin-bottom: 20px;
+  padding: 20px 22px;
+  margin-bottom: 22px;
+  box-shadow: var(--clay-inset-sm);
+  border: 1px solid var(--glass-border);
 }
 
 .chart-header {
@@ -784,171 +1209,213 @@ code {
   align-items: center;
   justify-content: space-between;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-secondary);
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .bar-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: 14px;
+  margin-bottom: 12px;
+  animation: slide-up-stagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .bar-row:last-child {
   margin-bottom: 0;
 }
 
+.bar-row:nth-child(1) { animation-delay: 0.04s; }
+.bar-row:nth-child(2) { animation-delay: 0.08s; }
+.bar-row:nth-child(3) { animation-delay: 0.12s; }
+.bar-row:nth-child(4) { animation-delay: 0.16s; }
+.bar-row:nth-child(5) { animation-delay: 0.20s; }
+.bar-row:nth-child(6) { animation-delay: 0.24s; }
+.bar-row:nth-child(7) { animation-delay: 0.28s; }
+.bar-row:nth-child(8) { animation-delay: 0.32s; }
+
+@keyframes slide-up-stagger {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .bar-label {
-  width: 90px;
+  width: 95px;
   font-size: 12px;
   font-family: var(--font-mono);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Sunken Clay Bar Track */
 .bar-track {
   flex: 1;
-  height: 10px;
+  height: 12px;
   background: var(--bg-input);
+  box-shadow: var(--clay-inset-sm);
   border-radius: var(--radius-pill);
   overflow: hidden;
+  padding: 1.5px;
 }
 
+/* Inflated 3D Clay Bar Fill */
 .bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--apple-blue) 0%, var(--apple-indigo) 100%);
+  background: linear-gradient(90deg, var(--clay-blue) 0%, var(--clay-indigo) 100%);
   border-radius: var(--radius-pill);
-  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 2px 0 8px var(--clay-blue-glow), inset 1px 1px 2px rgba(255, 255, 255, 0.4);
+  transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
 }
 
 .bar-value {
-  width: 65px;
+  width: 70px;
   text-align: right;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text-secondary);
 }
 
 .card-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 18px;
 }
 
-/* Buttons System */
+/* ==========================================================================
+   CLAY BUTTONS SYSTEM (Extruded Salidos & Sunken Hundidos)
+   ========================================================================== */
 .btn-apple {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 9px;
+  padding: 12px 24px;
   border-radius: var(--radius-pill);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   font-family: inherit;
   cursor: pointer;
   text-decoration: none;
-  transition: var(--transition-fast);
   border: none;
+  user-select: none;
+  transition: all var(--spring-snappy);
 }
 
+/* Primary Button (Salido / Extruded Clay) */
 .btn-apple-primary {
-  background: var(--apple-blue);
+  background: var(--btn-primary-bg);
   color: #ffffff;
-  box-shadow: 0 6px 18px -2px var(--apple-blue-glow);
+  box-shadow: var(--btn-primary-shadow);
 }
 
 .btn-apple-primary:hover {
-  background: var(--apple-blue-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 24px -2px var(--apple-blue-glow);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 8px 14px 26px var(--clay-blue-glow), -4px -4px 12px rgba(255, 255, 255, 0.9), inset 2px 2px 4px rgba(255, 255, 255, 0.55), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.btn-apple-primary:active {
+  transform: translateY(3px) scale(0.97);
+  box-shadow: var(--btn-primary-active);
+}
+
+/* Secondary Button (Clay Card Pill Salido) */
 .btn-apple-secondary {
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
+  box-shadow: var(--clay-shadow-sm);
 }
 
 .btn-apple-secondary:hover {
   background: var(--bg-card-hover);
-  border-color: var(--apple-blue);
-  transform: translateY(-1px);
+  color: var(--clay-blue);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--clay-shadow-md);
 }
 
+.btn-apple-secondary:active {
+  transform: translateY(2px) scale(0.97);
+  box-shadow: var(--clay-inset-sm);
+}
+
+/* Ghost Button (Sunken groove on press) */
 .btn-apple-ghost {
-  background: transparent;
+  background: var(--bg-card);
   border: 1px solid var(--glass-border);
   color: var(--text-secondary);
+  box-shadow: var(--clay-shadow-sm);
 }
 
 .btn-apple-ghost:hover {
-  background: var(--bg-input);
+  background: var(--bg-card-hover);
   color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-md);
 }
 
-.btn-apple:active {
-  transform: scale(0.96);
+.btn-apple-ghost:active {
+  transform: translateY(2px) scale(0.97);
+  box-shadow: var(--clay-inset-sm);
 }
 
-/* ------------------------------------------------------------------
-   FEATURES SECTION
-   ------------------------------------------------------------------ */
+/* ==========================================================================
+   FEATURES SECTION (3D Clay Cards)
+   ========================================================================== */
 .features-section {
-  margin-top: 60px;
+  margin-top: 64px;
 }
 
 .section-title {
   text-align: center;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   letter-spacing: -0.025em;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   color: var(--text-primary);
 }
 
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 22px;
 }
 
 .feature-apple-card {
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
-  padding: 28px 24px;
-  box-shadow: var(--glass-shadow);
-  transition: var(--transition-spring);
+  padding: 30px 26px;
+  box-shadow: var(--clay-shadow-md);
+  border: 1px solid var(--glass-border);
+  transition: transform var(--spring-bounce), box-shadow var(--spring-bounce);
 }
 
 .feature-apple-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--glass-border-hover);
-  box-shadow: var(--glass-shadow-lg);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: var(--clay-shadow-xl);
 }
 
 .feature-icon-badge {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-md);
-  background: var(--apple-blue-soft);
-  color: var(--apple-blue);
+  background: linear-gradient(135deg, var(--clay-blue-soft), var(--clay-purple-soft));
+  color: var(--clay-blue);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  box-shadow: var(--clay-shadow-sm);
+  transition: color 0.4s ease;
 }
 
 .feature-apple-card h3 {
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 17px;
+  font-weight: 800;
   margin-bottom: 8px;
   color: var(--text-primary);
 }
@@ -956,82 +1423,85 @@ code {
 .feature-apple-card p {
   font-size: 13px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* ------------------------------------------------------------------
-   INTERACTIVE DATA PREVIEW MODAL
-   ------------------------------------------------------------------ */
+/* ==========================================================================
+   INTERACTIVE DATA PREVIEW & DASHBOARD MODAL (3D Clay Sheet)
+   ========================================================================== */
 .modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
-  animation: fade-in 0.25s ease;
+  animation: clay-fade-in 0.25s ease;
 }
 
 .modal-backdrop[hidden] {
   display: none !important;
 }
 
-@keyframes fade-in {
+@keyframes clay-fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 .modal-card {
   background: var(--bg-card-solid);
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
   width: 100%;
-  max-width: 860px;
-  max-height: 88vh;
+  max-width: 900px;
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--clay-shadow-xl), 0 35px 70px -15px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--glass-border);
   overflow: hidden;
-  animation: scale-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: clay-scale-up 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes scale-up {
-  from { transform: scale(0.94); opacity: 0; }
+@keyframes clay-scale-up {
+  from { transform: scale(0.92); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
 
 .modal-header {
-  padding: 20px 26px;
+  padding: 22px 28px;
   border-bottom: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: var(--bg-card);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .modal-title-group {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .modal-icon-badge {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: var(--radius-md);
-  background: var(--apple-blue-soft);
-  color: var(--apple-blue);
+  background: linear-gradient(135deg, var(--clay-blue), var(--clay-indigo));
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 3px 6px 14px var(--clay-blue-glow), inset 2px 2px 3px rgba(255, 255, 255, 0.4);
+  transition: background 0.4s ease;
 }
 
 .modal-header h3 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--text-primary);
 }
@@ -1041,27 +1511,36 @@ code {
   color: var(--text-secondary);
 }
 
+/* Clay Close Button */
 .modal-close-btn {
   background: var(--bg-input);
-  border: none;
+  border: 1px solid var(--glass-border);
   color: var(--text-secondary);
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: var(--transition-fast);
+  box-shadow: var(--clay-shadow-sm);
+  transition: all var(--spring-snappy);
 }
 
 .modal-close-btn:hover {
-  background: var(--apple-red-soft);
-  color: var(--apple-red);
+  background: var(--clay-red-soft);
+  color: var(--clay-red);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow: var(--clay-shadow-md);
+}
+
+.modal-close-btn:active {
+  transform: scale(0.9);
+  box-shadow: var(--clay-inset-sm);
 }
 
 .modal-body {
-  padding: 24px 26px;
+  padding: 26px 28px;
   overflow-y: auto;
   flex: 1;
 }
@@ -1069,16 +1548,37 @@ code {
 .modal-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.modal-charts-grid {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.chart-box {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  flex: 1;
+  position: relative;
+  min-height: 260px;
+  box-shadow: var(--clay-shadow-sm);
+  border: 1px solid var(--glass-border);
+}
+
+.chart-box-wide {
+  flex: 1.8;
 }
 
 .modal-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 18px;
 }
 
 .modal-search-box {
@@ -1090,42 +1590,46 @@ code {
 
 .modal-search-box svg {
   position: absolute;
-  left: 14px;
+  left: 16px;
   color: var(--text-tertiary);
   pointer-events: none;
 }
 
 .modal-search-box input {
   width: 100%;
-  padding: 10px 14px 10px 40px;
+  padding: 12px 18px 12px 44px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--glass-border);
   background: var(--bg-input);
+  box-shadow: var(--clay-inset-md);
   color: var(--text-primary);
   font-size: 13px;
+  font-weight: 700;
   font-family: inherit;
   outline: none;
-  transition: var(--transition-fast);
+  transition: all var(--spring-snappy);
 }
 
 .modal-search-box input:focus {
   background: var(--bg-input-focus);
-  border-color: var(--apple-blue);
-  box-shadow: 0 0 0 3px var(--apple-blue-glow);
+  box-shadow: var(--clay-inset-lg), 0 0 0 3px var(--clay-blue-glow);
 }
 
 .modal-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
+/* Clay Table View */
 .modal-table-container {
-  border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
+  box-shadow: var(--clay-inset-sm);
+  background: var(--bg-card);
   overflow: hidden;
   max-height: 380px;
   overflow-y: auto;
+  border: 1px solid var(--glass-border);
 }
 
 .apple-table {
@@ -1138,22 +1642,23 @@ code {
 .apple-table th {
   position: sticky;
   top: 0;
-  background: var(--bg-card);
-  backdrop-filter: blur(10px);
+  background: var(--bg-card-solid);
   color: var(--text-secondary);
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 12px 16px;
+  letter-spacing: 0.06em;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--glass-border);
   z-index: 10;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .apple-table td {
-  padding: 12px 16px;
+  padding: 13px 18px;
   border-bottom: 1px solid var(--glass-border);
   color: var(--text-primary);
+  font-weight: 600;
 }
 
 .apple-table tbody tr:last-child td {
@@ -1165,13 +1670,14 @@ code {
 }
 
 .apple-table tbody tr:hover {
-  background: var(--apple-blue-soft);
+  background: var(--clay-blue-soft);
 }
 
 .td-cr {
   font-family: var(--font-mono);
-  font-weight: 700;
-  color: var(--apple-blue);
+  font-weight: 800;
+  color: var(--clay-blue);
+  transition: color 0.4s ease;
 }
 
 .td-folio {
@@ -1181,137 +1687,111 @@ code {
 
 .pct-chip {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: var(--radius-pill);
-  background: var(--bg-input);
+  background: var(--bg-card);
+  box-shadow: var(--clay-shadow-sm);
   font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
+  font-weight: 800;
+  color: var(--clay-blue);
+  transition: color 0.4s ease;
 }
 
 .modal-footer {
-  padding: 16px 26px;
+  padding: 18px 28px;
   border-top: 1px solid var(--glass-border);
   background: var(--bg-card);
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 13px;
+  font-weight: 700;
   color: var(--text-secondary);
-}
-
-/* ------------------------------------------------------------------
-   FOOTER
-   ------------------------------------------------------------------ */
-.footer-apple {
-  text-align: center;
-  padding: 30px 24px;
-  font-size: 13px;
-  color: var(--text-tertiary);
-  border-top: 1px solid var(--glass-border);
-  margin-top: 60px;
-}
-
-.footer-apple a {
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.footer-apple a:hover {
-  color: var(--apple-blue);
-  text-decoration: underline;
-}
-
-/* Responsive Breakpoints */
-@media (max-width: 768px) {
-  .hero-title { font-size: 24px; }
-  .kpi-grid, .modal-kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .features-grid { grid-template-columns: 1fr; }
-  .modal-toolbar { flex-direction: column; align-items: stretch; }
-  .card-actions { flex-direction: column; align-items: stretch; }
 }
 
 /* ==========================================================================
-   ENHANCEMENTS: PROPOSALS
+   GLOBAL DRAG OVERLAY & CUSTOM SCROLLBARS
    ========================================================================== */
-
-/* 1. Noise texture overlay for glassmorphism */
-.header-glass::before, .dropzone-apple::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: -1;
-  border-radius: inherit;
-}
-
-/* 2. Stagger animations for bar chart */
-.bar-row {
-  animation: slide-up-stagger 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.bar-row:nth-child(1) { animation-delay: 0.05s; }
-.bar-row:nth-child(2) { animation-delay: 0.10s; }
-.bar-row:nth-child(3) { animation-delay: 0.15s; }
-.bar-row:nth-child(4) { animation-delay: 0.20s; }
-.bar-row:nth-child(5) { animation-delay: 0.25s; }
-.bar-row:nth-child(6) { animation-delay: 0.30s; }
-.bar-row:nth-child(7) { animation-delay: 0.35s; }
-.bar-row:nth-child(8) { animation-delay: 0.40s; }
-
-@keyframes slide-up-stagger {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* 3. Global Drag Overlay */
 body::after {
   content: "Suelta tus archivos aquí 🚀";
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 40px;
+  color: #ffffff;
+  font-size: 36px;
   font-weight: 800;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
+
 body.global-drag-active::after {
   opacity: 1;
 }
 
-/* 4. Smooth theme transition globally */
-body, .apple-card, .header-glass, .dropzone-apple {
-  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, color 0.4s ease !important;
+/* Tactile Clay Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
-/* 5. Modal Charts Layout */
-.modal-charts-grid {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-.chart-box {
-  background: var(--bg-card-solid);
-  border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
-  padding: 16px;
-  flex: 1;
-  position: relative;
-  min-height: 250px;
-}
-.chart-box-wide {
-  flex: 1.8;
+::-webkit-scrollbar-track {
+  background: var(--bg-input);
+  border-radius: var(--radius-pill);
 }
 
-@media (max-width: 768px) {
+::-webkit-scrollbar-thumb {
+  background: var(--bg-card-hover);
+  box-shadow: var(--clay-shadow-sm);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--bg-input);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--clay-blue);
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer-apple {
+  text-align: center;
+  padding: 36px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--glass-border);
+  margin-top: 64px;
+}
+
+.footer-apple a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.footer-apple a:hover {
+  color: var(--clay-blue);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 820px) {
+  .hero-title { font-size: 26px; }
+  .kpi-grid, .modal-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: 1fr; }
   .modal-charts-grid { flex-direction: column; }
+  .modal-toolbar { flex-direction: column; align-items: stretch; }
+  .card-actions { flex-direction: column; align-items: stretch; }
+  .modal-footer { flex-direction: column; gap: 14px; align-items: stretch; text-align: center; }
+  .modal-footer > div { justify-content: center; }
 }
