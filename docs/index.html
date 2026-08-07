@@ -45,6 +45,11 @@
         <span class="status-text">Listo para trabajar</span>
       </div>
 
+      <button type="button" id="btn-compact" class="theme-pill-btn" aria-label="Modo compacto para pantalla dividida" title="Modo compacto / Pantalla dividida">
+        <span class="icono-compact" aria-hidden="true">◫</span>
+        <span class="texto-compact">Compacto</span>
+      </button>
+
       <button type="button" id="btn-tema" class="theme-pill-btn" aria-label="Cambiar tema de color" aria-pressed="false">
         <span class="icono-tema" aria-hidden="true">🌙</span>
         <span class="texto-tema">Modo oscuro</span>
@@ -84,74 +89,95 @@
       
       <div class="file-pills">
         <span class="file-pill">
-          <svg class="svg-motion-wiggle" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           .xlsx
         </span>
         <span class="file-pill">
-          <svg class="svg-motion-wiggle" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           .xlsm
         </span>
         <span class="file-pill">
-          <svg class="svg-motion-wiggle" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
           .csv
         </span>
         <span class="file-pill highlight-pill">
-          <svg class="svg-motion-pulse" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <svg class="svg-motion-pulse" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           Multihilo local
         </span>
       </div>
     </div>
   </section>
 
-  <!-- Advanced Options Collapsible -->
+  <!-- Historial del Turno de Juan -->
+  <section id="seccion-historial" class="historial-section" style="display:none;">
+    <div class="historial-header">
+      <div class="historial-title-group">
+        <div class="historial-icon-badge">
+          <svg class="svg-motion-pulse" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3 class="historial-title">Historial del Turno · Juan</h3>
+        <span id="historial-badge" class="historial-counter">0 reportes</span>
+      </div>
+      <button type="button" id="btn-limpiar-historial" class="btn-apple-mini btn-apple-ghost" title="Limpiar historial">
+        Limpiar Turno
+      </button>
+    </div>
+    <div id="historial-lista" class="historial-grid"></div>
+  </section>
+
+  <!-- Advanced Options (Collapsible Card) -->
   <details class="advanced-card">
     <summary>
       <div class="summary-left">
-        <svg class="svg-motion-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
+        <svg class="svg-motion-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
         <span>Ajustes de búsqueda de columna</span>
       </div>
       <span class="summary-badge">Columna actual: <strong id="lbl-col-actual">pr_centro_reparto</strong></span>
     </summary>
+    
     <div class="advanced-content">
-      <div class="advanced-field">
-        <label for="campo-columna">Nombre de la columna a resumir</label>
-        <input type="text" id="campo-columna" value="pr_centro_reparto" placeholder="Ej. pr_centro_reparto">
+      <div class="input-group">
+        <label for="campo-columna">Nombre o encabezado exacto de la columna</label>
+        <input type="text" id="campo-columna" value="pr_centro_reparto" placeholder="Ej: pr_centro_reparto, CENTRO_REPARTO...">
       </div>
 
       <div class="presets-wrapper">
-        <span class="presets-label">Selección rápida de columnas comunes:</span>
+        <span class="presets-label">Atajos frecuentes:</span>
         <div class="preset-chips">
           <button type="button" class="preset-chip active" data-preset="pr_centro_reparto">pr_centro_reparto</button>
           <button type="button" class="preset-chip" data-preset="centro_reparto">centro_reparto</button>
           <button type="button" class="preset-chip" data-preset="CR">CR</button>
-          <button type="button" class="preset-chip" data-preset="SUCURSAL">SUCURSAL</button>
-          <button type="button" class="preset-chip" data-preset="AGENCIA">AGENCIA</button>
+          <button type="button" class="preset-chip" data-preset="CENTRO REPARTO">CENTRO REPARTO</button>
         </div>
       </div>
-      
-      <p class="advanced-note">💡 Búsqueda flexible sin distinguir mayúsculas ni acentos en todas las hojas del libro Excel o CSV.</p>
+
+      <p class="advanced-note">
+        El algoritmo normaliza mayúsculas, minúsculas, espacios y acentos automáticamente para encontrar la coincidencia exacta.
+      </p>
     </div>
   </details>
 
-  <!-- Work Queue Section -->
-  <section id="cola" class="queue-section" hidden>
+  <!-- Work Queue Section (Active Cards) -->
+  <section class="queue-section">
     <div class="queue-header">
       <div class="queue-title-group">
-        <h2 class="queue-title">Archivos Procesados</h2>
-        <span id="queue-counter" class="queue-counter-badge">0</span>
+        <h3 class="queue-title">Archivos Procesados</h3>
+        <span id="contador-archivos" class="queue-counter-badge">0</span>
       </div>
-
+      
       <div class="queue-header-actions">
-        <button type="button" id="btn-limpiar" class="btn-apple btn-apple-ghost">
-          <svg class="svg-motion-wiggle" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <button type="button" id="btn-limpiar-cola" class="btn-apple-secondary btn-apple-mini" style="display:none;">
+          <svg class="svg-motion-wiggle" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
           Limpiar
         </button>
       </div>
     </div>
-    <div id="lista-trabajos" class="queue-list"></div>
+
+    <!-- Active Cards Container -->
+    <div id="lista-archivos" class="queue-list"></div>
   </section>
 
   <!-- Clean Apple Features Grid -->

@@ -1010,9 +1010,181 @@ code {
   transform: translateY(1px);
 }
 
-.advanced-note {
-  font-size: 12px;
+/* ==========================================================================
+   COMPACT VIEW / MODO PANTALLA DIVIDIDA (SPLIT SCREEN)
+   ========================================================================== */
+body.compact-view .main-layout {
+  max-width: 680px;
+  padding: 14px 10px 40px;
+}
+
+body.compact-view .hero-section {
+  margin-bottom: 14px;
+}
+
+body.compact-view .hero-subtitle {
+  display: none;
+}
+
+body.compact-view .hero-title {
+  font-size: 19px;
+  margin: 4px 0;
+}
+
+body.compact-view .dropzone-apple {
+  padding: 24px 16px;
+  margin-bottom: 18px;
+}
+
+body.compact-view .dropzone-icon-pulse {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 10px;
+}
+
+body.compact-view .dropzone-icon-pulse svg {
+  width: 20px;
+  height: 20px;
+}
+
+body.compact-view .apple-card {
+  padding: 16px 14px;
+}
+
+body.compact-view .kpi-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+/* ==========================================================================
+   HISTORIAL DEL TURNO · JUAN (Session Persistence & Instant Recovery)
+   ========================================================================== */
+.historial-section {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px;
+  box-shadow: var(--clay-shadow-md);
+  border: 1px solid var(--glass-border);
+  margin-bottom: 28px;
+  animation: clay-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.historial-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 10px;
+}
+
+.historial-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.historial-icon-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--clay-blue-soft);
+  color: var(--clay-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.historial-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.historial-counter {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-input);
+  box-shadow: var(--clay-inset-sm);
+  color: var(--clay-blue);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.historial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.historial-card {
+  background: var(--bg-card-solid);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  box-shadow: var(--clay-shadow-sm);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  transition: all var(--spring-snappy);
+}
+
+.historial-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--clay-shadow-md);
+  border-color: var(--clay-blue);
+}
+
+.historial-card-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.historial-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.historial-hora {
+  font-size: 10px;
+  font-family: var(--font-mono);
   color: var(--text-tertiary);
+  font-weight: 700;
+}
+
+.historial-tag {
+  font-size: 9px;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--clay-green-soft);
+  color: var(--clay-green);
+  font-weight: 800;
+}
+
+.historial-filename {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.historial-stats {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.btn-apple-mini {
+  padding: 6px 12px !important;
+  font-size: 11.5px !important;
+  min-height: 32px !important;
+  border-radius: var(--radius-pill) !important;
 }
 
 /* ==========================================================================

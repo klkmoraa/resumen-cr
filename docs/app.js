@@ -421,10 +421,126 @@
   }
 
   // ------------------------------------------------------------------
+  // 1. Modo Compacto / Pantalla Dividida (Split-Screen Mode)
+  // ------------------------------------------------------------------
+  const btnCompact = document.getElementById("btn-compact");
+  if (btnCompact) {
+    try {
+      const guardado = localStorage.getItem("juan_workspace_compact");
+      if (guardado === "true") {
+        document.body.classList.add("compact-view");
+        btnCompact.classList.add("active");
+      }
+    } catch (e) {}
+
+    btnCompact.addEventListener("click", () => {
+      sonarPop(540);
+      const activo = document.body.classList.toggle("compact-view");
+      btnCompact.classList.toggle("active", activo);
+      try {
+        localStorage.setItem("juan_workspace_compact", String(activo));
+      } catch (e) {}
+    });
+  }
+
+  // ------------------------------------------------------------------
+  // 2. Historial de Turno & Recuperación Instantánea (Local & Privado)
+  // ------------------------------------------------------------------
+  function obtenerHistorial() {
+    try {
+      return JSON.parse(localStorage.getItem("juan_workspace_historial") || "[]");
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function guardarHistorial(item) {
+    try {
+      const lista = obtenerHistorial();
+      const r = item.datos?.resumen || item.datos;
+      const nuevo = {
+        id: Date.now(),
+        nombre: item.nombreArchivo || "Archivo.xlsx",
+        fecha: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        totalRegs: r?.totalRegistros || 0,
+        crsDistintos: r?.crsDistintos || 0,
+        segundos: item.segundos || 0,
+        resumen: r,
+        filas: r?.filasResumen || []
+      };
+      // Conservar los últimos 10 archivos procesados
+      lista.unshift(nuevo);
+      if (lista.length > 10) lista.length = 10;
+      localStorage.setItem("juan_workspace_historial", JSON.stringify(lista));
+      renderizarHistorialUI();
+    } catch (e) {}
+  }
+
+  function renderizarHistorialUI() {
+    const seccion = document.getElementById("seccion-historial");
+    const contenedor = document.getElementById("historial-lista");
+    const badge = document.getElementById("historial-badge");
+    const btnLimpiar = document.getElementById("btn-limpiar-historial");
+    if (!seccion || !contenedor) return;
+
+    const lista = obtenerHistorial();
+    if (!lista.length) {
+      seccion.style.display = "none";
+      return;
+    }
+
+    seccion.style.display = "block";
+    if (badge) badge.textContent = `${lista.length} ${lista.length === 1 ? "reporte" : "reportes"}`;
+    contenedor.innerHTML = "";
+
+    lista.forEach((item) => {
+      const card = document.createElement("div");
+      card.className = "historial-card";
+      card.innerHTML = `
+        <div class="historial-card-left">
+          <div class="historial-meta-top">
+            <span class="historial-hora">${item.fecha}</span>
+            <span class="historial-tag">Completado</span>
+          </div>
+          <strong class="historial-filename" title="${item.nombre}">${item.nombre}</strong>
+          <span class="historial-stats">${formatearNumero(item.totalRegs)} registros &middot; ${formatearNumero(item.crsDistintos)} CRs (${item.segundos}s)</span>
+        </div>
+        <div class="historial-card-right">
+          <button type="button" class="btn-apple btn-apple-secondary btn-apple-mini btn-reabrir-historial">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            Reabrir
+          </button>
+        </div>
+      `;
+      const btnReabrir = card.querySelector(".btn-reabrir-historial");
+      if (btnReabrir && item.resumen) {
+        btnReabrir.addEventListener("click", () => {
+          sonarPop(620);
+          abrirModalPreview(item.nombre, item.resumen, item.filas || item.resumen.filasResumen, null);
+        });
+      }
+      contenedor.appendChild(card);
+    });
+
+    if (btnLimpiar) {
+      btnLimpiar.onclick = () => {
+        sonarPop(360);
+        try {
+          localStorage.removeItem("juan_workspace_historial");
+        } catch (e) {}
+        renderizarHistorialUI();
+      };
+    }
+  }
+
+  // Inicializar historial en carga
+  renderizarHistorialUI();
+
+  // ------------------------------------------------------------------
   // Auxiliares de Formato
   // ------------------------------------------------------------------
   function formatearNumero(n) {
-    return Number(n).toLocaleString("es-MX");
+    return Number(n || 0).toLocaleString("es-MX");
   }
 
   function el(etiqueta, opciones) {
@@ -453,6 +569,8 @@
   function actualizarContadorCola() {
     const total = lista ? lista.children.length : 0;
     if (queueCounter) queueCounter.textContent = String(total);
+    const contador = document.getElementById("contador-archivos");
+    if (contador) contador.textContent = String(total);
     if (cola) cola.hidden = total === 0;
   }
 
@@ -463,6 +581,19 @@
       trabajosListos.length = 0;
       if (entrada) entrada.disabled = false;
       actualizarContadorCola();
+    });
+  }
+
+  const btnLimpiarCola = document.getElementById("btn-limpiar-cola");
+  if (btnLimpiarCola) {
+    btnLimpiarCola.addEventListener("click", () => {
+      sonarPop(340);
+      const listaArchivos = document.getElementById("lista-archivos");
+      if (listaArchivos) listaArchivos.innerHTML = "";
+      trabajosListos.length = 0;
+      if (entrada) entrada.disabled = false;
+      actualizarContadorCola();
+      btnLimpiarCola.style.display = "none";
     });
   }
 
