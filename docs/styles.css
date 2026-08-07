@@ -73,11 +73,16 @@
   --radius-xl: 36px;
   --radius-pill: 9999px;
 
-  /* Framer-Motion Spring Physics Curves */
-  --spring-bounce: 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  --spring-snappy: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-  --spring-elastic: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --transition-fast: 0.18s ease;
+  /* Framer-Motion & Apple Spring Physics Curves (60/120fps ProMotion) */
+  --spring-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-snappy: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --spring-fluid: 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+  --spring-elastic: 0.6s cubic-bezier(0.25, 1.35, 0.45, 1);
+  --transition-theme: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                      color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                      border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                      box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ==========================================================================
@@ -757,16 +762,22 @@ code {
   border-radius: var(--radius-xl);
   padding: 54px 36px;
   text-align: center;
-  cursor: pointer;
+  border: 2px dashed var(--glass-border);
   box-shadow: var(--clay-shadow-lg);
-  border: 2px dashed rgba(160, 175, 198, 0.4);
-  transition: all var(--spring-bounce);
-  overflow: hidden;
+  cursor: pointer;
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform, box-shadow;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.3s ease, 
+              background-color 0.4s ease;
   margin-bottom: 32px;
 }
 
 .dropzone-apple:hover {
-  transform: translateY(-4px);
+  transform: translate3d(0, -4px, 0) scale3d(1.008, 1.008, 1);
   box-shadow: var(--clay-shadow-xl);
   border-color: var(--clay-blue);
 }
@@ -776,7 +787,7 @@ code {
   border-color: var(--clay-blue);
   background: var(--bg-card-solid);
   box-shadow: var(--clay-inset-md), 0 0 0 6px var(--clay-blue-glow);
-  transform: scale(1.015);
+  transform: translate3d(0, -2px, 0) scale3d(1.02, 1.02, 1);
 }
 
 .dropzone-apple:focus-visible {
@@ -784,7 +795,7 @@ code {
   box-shadow: var(--clay-shadow-xl), 0 0 0 4px var(--clay-blue-glow);
 }
 
-/* 3D Tactile Pulsing Clay Medallion */
+/* 3D Tactile Pulsing Clay Medallion with GPU acceleration */
 .dropzone-icon-pulse {
   width: 76px;
   height: 76px;
@@ -796,18 +807,19 @@ code {
   align-items: center;
   justify-content: center;
   box-shadow: 6px 10px 22px var(--clay-blue-glow), inset 2px 2px 4px rgba(255, 255, 255, 0.5), inset -2px -2px 4px rgba(0, 0, 0, 0.25);
-  animation: clay-pulse 3s infinite ease-in-out;
-  transition: transform var(--spring-bounce), background 0.4s ease;
+  animation: clay-pulse 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s ease;
 }
 
 .dropzone-apple:hover .dropzone-icon-pulse {
-  transform: scale(1.15) rotate(5deg);
+  transform: translate3d(0, -3px, 0) scale3d(1.14, 1.14, 1) rotate(4deg);
   animation-play-state: paused;
 }
 
 @keyframes clay-pulse {
-  0%, 100% { transform: scale(1); box-shadow: 6px 10px 22px var(--clay-blue-glow), inset 2px 2px 4px rgba(255, 255, 255, 0.5), inset -2px -2px 4px rgba(0, 0, 0, 0.25); }
-  50% { transform: scale(1.06); box-shadow: 10px 16px 30px var(--clay-blue-glow), inset 3px 3px 5px rgba(255, 255, 255, 0.6), inset -2px -2px 4px rgba(0, 0, 0, 0.2); }
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); box-shadow: 6px 10px 22px var(--clay-blue-glow), inset 2px 2px 4px rgba(255, 255, 255, 0.5), inset -2px -2px 4px rgba(0, 0, 0, 0.25); }
+  50% { transform: translate3d(0, -2px, 0) scale(1.05); box-shadow: 10px 16px 30px var(--clay-blue-glow), inset 3px 3px 5px rgba(255, 255, 255, 0.6), inset -2px -2px 4px rgba(0, 0, 0, 0.2); }
 }
 
 .dropzone-title {
