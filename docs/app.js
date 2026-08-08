@@ -617,15 +617,20 @@
     sonarPop(500);
     if (entrada) entrada.click();
   }
-  if (btnElegir) btnElegir.addEventListener("click", (e) => {
-    e.stopPropagation();
-    abrirSelector();
-  });
+  if (btnElegir) {
+    btnElegir.addEventListener("click", () => sonarPop(500));
+    btnElegir.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        abrirSelector();
+      }
+    });
+  }
   if (zona) {
     zona.addEventListener("click", (e) => {
-      // En móvil el input transparente recibe el toque y abre el selector
-      // nativo; no se debe intentar abrirlo una segunda vez por JavaScript.
-      if (e.target !== entrada) abrirSelector();
+      // El label visible activa el control nativo; el resto de la tarjeta
+      // conserva el atajo de clic para escritorio y teclado.
+      if (e.target !== entrada && e.target !== btnElegir && !(btnElegir && btnElegir.contains(e.target))) abrirSelector();
     });
     zona.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {

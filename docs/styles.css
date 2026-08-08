@@ -776,17 +776,18 @@ code {
   margin-bottom: 32px;
 }
 
-/* El selector nativo recibe el toque directamente: Safari móvil puede bloquear
-   input.click() cuando el control está oculto. */
+/* El label visible abre el selector nativo en escritorio y móvil. El input se
+   conserva accesible sin cubrir ni interceptar los controles de la tarjeta. */
 .dropzone-file-input {
   position: absolute;
-  inset: 0;
-  z-index: 5;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: pointer;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .dropzone-file-input:focus-visible {

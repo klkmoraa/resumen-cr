@@ -41,3 +41,11 @@ test("la exportación CSV neutraliza fórmulas de Excel", () => {
   assert.match(app, /function protegerCeldaCsv\(valor\)/);
   assert.match(app, /protegerCeldaCsv\(f\[1\]\)/);
 });
+
+test("el selector de archivos tiene un activador nativo visible", () => {
+  const html = leer("docs/index.html");
+  const estilos = leer("docs/styles.css");
+  assert.match(html, /<label[^>]+for="entrada-archivos"[^>]*id="btn-elegir"/);
+  const reglaInput = estilos.match(/\.dropzone-file-input\s*\{([^}]*)\}/)?.[1] || "";
+  assert.doesNotMatch(reglaInput, /inset:\s*0/);
+});
