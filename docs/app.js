@@ -66,7 +66,7 @@
     });
   }
 
-  async function guardarHistorial(registro) {
+  async function guardarHistorialBinario(registro) {
     try {
       const db = await openDB();
       const tx = db.transaction(STORE_NAME, "readwrite");
@@ -507,7 +507,12 @@
       if (btnReabrir && item.resumen) {
         btnReabrir.addEventListener("click", () => {
           sonarPop(620);
-          abrirModalPreview(item.nombre, item.resumen, item.filas || item.resumen.filasResumen, null);
+          abrirModalPreview(
+            item.nombre,
+            item.resumen,
+            item.filas || item.resumen.filasResumen,
+            obtenerUrlExcelActual(item.nombre)
+          );
         });
       }
       contenedor.appendChild(card);
@@ -575,6 +580,17 @@
     const idx = nombreOriginal.lastIndexOf(".");
     const base = idx >= 0 ? nombreOriginal.slice(0, idx) : nombreOriginal;
     return base + "_REPORTE_CR.xlsx";
+  }
+
+  function obtenerUrlExcelActual(nombreOriginal) {
+    const nombreReporte = nombreSalida(nombreOriginal);
+    for (let i = trabajosListos.length - 1; i >= 0; i--) {
+      const trabajo = trabajosListos[i];
+      if (trabajo && trabajo.nombre === nombreReporte && typeof trabajo.url === "string") {
+        return trabajo.url;
+      }
+    }
+    return null;
   }
 
   function actualizarContadorCola() {
@@ -821,6 +837,11 @@
           datos: { ...datos, bytes: datos.bytes },
           segundos: segundosReales
         });
+        guardarHistorialBinario({
+          nombreArchivo: archivo.name,
+          datos: { ...datos, bytes: datos.bytes },
+          segundos: segundosReales
+        });
 
         if (autoAbrir) {
           abrirModalPreview(archivo.name, datos.resumen, datos.resumen.filasResumen, blobUrl);
@@ -930,9 +951,7 @@
     tarjetaEl.appendChild(acciones);
 
     // Guardar en array de trabajos listos (por si se necesita a futuro)
-    if (esNuevo) {
-      trabajosListos.push({ nombre: nombreSalida(archivoOriginal.name), blob });
-    }
+    trabajosListos.push({ nombre: nombreSalida(archivoOriginal.name), blob, url });
     return url;
   }
 
@@ -978,8 +997,20 @@
     if (modalSubhead) modalSubhead.textContent = `Hoja Origen: '${resumen.hojaOrigen || "Datos"}' · ${formatearNumero(resumen.totalRegistros)} registros totales`;
 
     if (modalBtnDescargarExcel) {
-      modalBtnDescargarExcel.setAttribute("href", downloadUrl);
-      modalBtnDescargarExcel.setAttribute("download", nombreSalida(nombreOriginal));
+      const descargaDisponible = typeof downloadUrl === "string" && downloadUrl.startsWith("blob:");
+      if (descargaDisponible) {
+        modalBtnDescargarExcel.setAttribute("href", downloadUrl);
+        modalBtnDescargarExcel.setAttribute("download", nombreSalida(nombreOriginal));
+        modalBtnDescargarExcel.setAttribute("aria-disabled", "false");
+        modalBtnDescargarExcel.classList.remove("is-disabled");
+        modalBtnDescargarExcel.removeAttribute("title");
+      } else {
+        modalBtnDescargarExcel.removeAttribute("href");
+        modalBtnDescargarExcel.removeAttribute("download");
+        modalBtnDescargarExcel.setAttribute("aria-disabled", "true");
+        modalBtnDescargarExcel.classList.add("is-disabled");
+        modalBtnDescargarExcel.setAttribute("title", "Vuelve a cargar el archivo para descargar el Excel.");
+      }
     }
 
     // Modal KPIs

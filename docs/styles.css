@@ -1995,6 +1995,12 @@ body.compact-view .kpi-grid {
 .label-form-grid input:not(:disabled) { cursor: text; pointer-events: auto; }
 .label-form-error { margin: 16px 0 0; color: #dc2626; font-size: 13px; font-weight: 700; }
 
+#modal-btn-descargar-excel.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 @media (max-width: 640px) {
   .label-modal-backdrop { padding: 12px; }
   .label-modal-header, .label-modal-footer, .label-modal-body { padding-left: 18px; padding-right: 18px; }
