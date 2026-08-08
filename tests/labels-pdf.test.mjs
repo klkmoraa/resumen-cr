@@ -83,6 +83,7 @@ class DocumentoPdfFalso {
   setLineWidth() {}
   setFont() {}
   setFontSize(tamanio) { this.tamanio = tamanio; }
+  getTextWidth(contenido) { return String(contenido).length * this.tamanio * 0.35; }
   setTextColor(...color) { this.colorTexto = color; }
   setFillColor(...color) { this.colorRelleno = color; }
   line(...args) { this.lineas.push(args); }
@@ -120,12 +121,15 @@ test("la etiqueta amplía todos los textos y elimina las líneas divisorias", ()
     "AUTOTRAFFIC",
     "PUEBLA",
     "REMESA 2607 - 58",
-    "CENTRO DE REPARTO    OT- 3708",
+    "CENTRO DE REPARTO",
+    "OT- 3708",
     "FOLIO",
     "00001 AL 03000",
     "CAJA 001 DE 018",
   ]);
-  assert.deepEqual(pdf.textos.map(({ tamanio }) => tamanio), [34, 25, 28, 18, 17, 32, 40]);
+  assert.deepEqual(pdf.textos.map(({ tamanio }) => tamanio), [34, 25, 28, 18, 32, 17, 32, 40]);
+  assert.equal(pdf.textos[4].contenido, "OT- 3708");
+  assert.equal(pdf.textos[4].tamanio, 32);
   assert.equal(pdf.lineas.length, 0);
   assert.deepEqual(pdf.textos[6].color, [0, 0, 0]);
   assert.equal(

@@ -1105,10 +1105,28 @@
       doc.text(String(contenido).toUpperCase(), centro, y, { align: "center", maxWidth: ancho - 52 });
     };
 
+    const textoOtDestacado = (ot, y) => {
+      const etiqueta = "CENTRO DE REPARTO";
+      const valorOt = String(ot).toUpperCase();
+      const separacion = 7;
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(18);
+      const anchoEtiqueta = doc.getTextWidth(etiqueta);
+      doc.setFontSize(32);
+      const anchoOt = doc.getTextWidth(valorOt);
+      const inicio = centro - (anchoEtiqueta + separacion + anchoOt) / 2;
+
+      doc.setFontSize(18);
+      doc.text(etiqueta, inicio, y);
+      doc.setFontSize(32);
+      doc.text(valorOt, inicio + anchoEtiqueta + separacion, y);
+    };
+
     texto(datos.linea1, 38, 34, "bold");
     texto(datos.linea2, 58, 25, "bold");
     texto(datos.remesa, 83, 28, "bold");
-    texto(`CENTRO DE REPARTO    ${datos.ot}`, 107, 18, "bold");
+    textoOtDestacado(datos.ot, 107);
     texto("FOLIO", 127, 17, "bold");
     texto(`${formatoFolio(inicio)} AL ${formatoFolio(fin)}`, 151, 32, "bold");
     doc.setTextColor(0, 0, 0);
