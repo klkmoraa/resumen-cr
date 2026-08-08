@@ -15,6 +15,7 @@ webapp/_trabajo/
 .venv/
 venv/
 node_modules/
+.worktrees/
 
 # Excel de ejemplo con datos reales de personas (nombres, domicilios).
 # NUNCA deben subirse al repositorio. Las pruebas generan sus propios
