@@ -27,11 +27,24 @@
   const modalBtnDescargarExcel = document.getElementById("modal-btn-descargar-excel");
   const modalRegistroCount = document.getElementById("modal-registro-count");
   const modalCerrar = document.getElementById("modal-cerrar");
+  const modalBtnEtiquetas = document.getElementById("modal-btn-etiquetas");
+  const modalEtiquetas = document.getElementById("modal-etiquetas");
+  const formEtiquetas = document.getElementById("form-etiquetas");
+  const etiquetasCerrar = document.getElementById("etiquetas-cerrar");
+  const etiquetasCancelar = document.getElementById("etiquetas-cancelar");
+  const etiquetasResumen = document.getElementById("etiquetas-resumen");
+  const etiquetasLinea1 = document.getElementById("etiquetas-linea-1");
+  const etiquetasLinea2 = document.getElementById("etiquetas-linea-2");
+  const etiquetasAtm = document.getElementById("etiquetas-atm");
+  const etiquetasOt = document.getElementById("etiquetas-ot");
+  const etiquetasError = document.getElementById("etiquetas-error");
+  const etiquetasGenerar = document.getElementById("etiquetas-generar");
 
   const EXTENSIONES_VALIDAS = [".xlsx", ".xlsm", ".csv"];
   let contador = 0;
   const trabajosListos = [];
   let currentModalFilas = [];
+  let currentModalNombre = "";
 
   // --- IndexedDB History ---
   const DB_NAME = "ResumenCR_DB";
@@ -926,6 +939,7 @@
     try {
       if (!modalPreview) return;
       currentModalFilas = filas || [];
+      currentModalNombre = nombreOriginal || "Archivo";
 
       if (modalFilename) modalFilename.textContent = nombreOriginal;
     if (modalSubhead) modalSubhead.textContent = `Hoja Origen: '${resumen.hojaOrigen || "Datos"}' · ${formatearNumero(resumen.totalRegistros)} registros totales`;
@@ -969,6 +983,93 @@
     document.body.style.overflow = "";
   }
 
+  function totalFoliosActual() {
+    return currentModalFilas.reduce((acumulado, fila) => acumulado + Number(fila[2] || 0), 0);
+  }
+
+  function formatoFolio(numero) {
+    return String(numero).padStart(5, "0");
+  }
+
+  function obtenerDatosArchivo(nombreArchivo) {
+    const base = String(nombreArchivo || "").replace(/\.[^.]+$/, "");
+    const atm = base.match(/(?:^|[_\s-])ATM[_\s-]*(\d{4})[_\s-]*(\d+)(?=$|[_\s-])/i);
+    const ot = base.match(/(?:^|[_\s-])OT[_\s-]*(\d+)(?=$|[_\s-])/i);
+    return {
+      atm: atm ? `ATM ${atm[1]} - ${atm[2]}` : "",
+      ot: ot ? `OT- ${ot[1]}` : "",
+      faltaATM: !atm,
+      faltaOT: !ot,
+    };
+  }
+
+  function abrirModalEtiquetas() {
+    const total = totalFoliosActual();
+    if (!total) {
+      alert("No hay registros válidos para crear las etiquetas.");
+      return;
+    }
+
+    const datosArchivo = obtenerDatosArchivo(currentModalNombre || modalFilename.textContent);
+    const totalCajas = Math.ceil(total / 3000);
+    etiquetasAtm.value = datosArchivo.atm;
+    etiquetasOt.value = datosArchivo.ot;
+    etiquetasResumen.textContent = `${formatearNumero(total)} folios válidos · ${formatearNumero(totalCajas)} caja${totalCajas === 1 ? "" : "s"} · una etiqueta por hoja carta horizontal.`;
+    etiquetasError.hidden = true;
+    modalEtiquetas.hidden = false;
+    etiquetasLinea1.focus();
+  }
+
+  function cerrarModalEtiquetas() {
+    if (!modalEtiquetas) return;
+    modalEtiquetas.hidden = true;
+  }
+
+  function dibujarEtiquetaCaja(doc, datos, inicio, fin, numeroCaja, totalCajas) {
+    const ancho = doc.internal.pageSize.getWidth();
+    const alto = doc.internal.pageSize.getHeight();
+    const margenX = 21;
+    const margenY = 18;
+    const centro = ancho / 2;
+
+    doc.setDrawColor(31, 41, 55);
+    doc.setLineWidth(0.8);
+    doc.rect(margenX, margenY, ancho - margenX * 2, alto - margenY * 2);
+    doc.setTextColor(17, 24, 39);
+
+    const texto = (contenido, y, tamanio, estilo) => {
+      doc.setFont("helvetica", estilo);
+      doc.setFontSize(tamanio);
+      doc.text(String(contenido).toUpperCase(), centro, y, { align: "center", maxWidth: ancho - 52 });
+    };
+
+    texto(datos.linea1, 42, 18, "bold");
+    texto(datos.linea2, 54, 16, "normal");
+    doc.setLineWidth(0.35);
+    doc.line(centro - 48, 62, centro + 48, 62);
+    texto(datos.atm, 76, 17, "bold");
+    texto(`CENTRO DE REPARTO    ${datos.ot}`, 91, 11, "bold");
+    texto("FOLIO", 109, 11, "bold");
+    texto(`${formatoFolio(inicio)} AL ${formatoFolio(fin)}`, 125, 21, "bold");
+    texto(`CAJA ${String(numeroCaja).padStart(3, "0")} DE ${String(totalCajas).padStart(3, "0")}`, 144, 15, "bold");
+  }
+
+  function generarEtiquetasPdf(datos) {
+    const total = totalFoliosActual();
+    const totalCajas = Math.ceil(total / 3000);
+    const doc = new jspdf.jsPDF({ orientation: "landscape", unit: "mm", format: "letter" });
+
+    for (let caja = 1; caja <= totalCajas; caja++) {
+      if (caja > 1) doc.addPage("letter", "landscape");
+      const inicio = (caja - 1) * 3000 + 1;
+      const fin = Math.min(caja * 3000, total);
+      dibujarEtiquetaCaja(doc, datos, inicio, fin, caja, totalCajas);
+    }
+
+    const base = (currentModalNombre || "Etiquetas").replace(/\.[^/.]+$/, "");
+    doc.save(`${base}_ETIQUETAS_CAJA.pdf`);
+  }
+
   if (modalCerrar) modalCerrar.addEventListener("click", cerrarModalPreview);
   if (modalPreview) {
     modalPreview.addEventListener("click", (e) => {
@@ -976,10 +1077,62 @@
     });
   }
   document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modalEtiquetas && !modalEtiquetas.hidden) {
+      cerrarModalEtiquetas();
+      return;
+    }
     if (e.key === "Escape" && modalPreview && !modalPreview.hidden) {
       cerrarModalPreview();
     }
   });
+
+  if (modalBtnEtiquetas) modalBtnEtiquetas.addEventListener("click", abrirModalEtiquetas);
+  if (etiquetasCerrar) etiquetasCerrar.addEventListener("click", cerrarModalEtiquetas);
+  if (etiquetasCancelar) etiquetasCancelar.addEventListener("click", cerrarModalEtiquetas);
+  if (modalEtiquetas) {
+    modalEtiquetas.addEventListener("click", (e) => {
+      if (e.target === modalEtiquetas) cerrarModalEtiquetas();
+    });
+  }
+  if (formEtiquetas) {
+    formEtiquetas.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (typeof jspdf === "undefined" || !jspdf.jsPDF) {
+        etiquetasError.textContent = "Las librerías de PDF no se cargaron correctamente. Revisa tu conexión e inténtalo de nuevo.";
+        etiquetasError.hidden = false;
+        return;
+      }
+      const datos = {
+        linea1: etiquetasLinea1.value.trim(),
+        linea2: etiquetasLinea2.value.trim(),
+        atm: etiquetasAtm.value.trim(),
+        ot: etiquetasOt.value.trim(),
+      };
+      if (!datos.linea1 || !datos.linea2 || !datos.atm || !datos.ot) {
+        etiquetasError.textContent = "Completa los dos renglones, ATM y OT antes de generar las etiquetas.";
+        etiquetasError.hidden = false;
+        return;
+      }
+
+      const textoOriginal = etiquetasGenerar.textContent;
+      etiquetasGenerar.textContent = "Generando PDF...";
+      etiquetasGenerar.disabled = true;
+      etiquetasError.hidden = true;
+      setTimeout(() => {
+        try {
+          generarEtiquetasPdf(datos);
+          cerrarModalEtiquetas();
+        } catch (error) {
+          console.error("Error al generar etiquetas PDF:", error);
+          etiquetasError.textContent = "No se pudieron generar las etiquetas. Inténtalo nuevamente.";
+          etiquetasError.hidden = false;
+        } finally {
+          etiquetasGenerar.textContent = textoOriginal;
+          etiquetasGenerar.disabled = false;
+        }
+      }, 50);
+    });
+  }
 
   function renderizarTablaModal(filas, totalRegs) {
     if (!modalTablaBody) return;

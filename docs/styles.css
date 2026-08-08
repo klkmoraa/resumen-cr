@@ -1918,6 +1918,72 @@ body.compact-view .kpi-grid {
 }
 
 /* ==========================================================================
+   BOX LABEL PDF CONFIGURATION
+   ========================================================================== */
+.label-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, 0.62);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.label-modal-backdrop[hidden] { display: none; }
+
+.label-modal-card {
+  width: min(100%, 620px);
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  box-shadow: var(--clay-shadow-lg);
+}
+
+.label-modal-header,
+.label-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 24px;
+}
+
+.label-modal-header { border-bottom: 1px solid var(--glass-border); }
+.label-modal-footer { border-top: 1px solid var(--glass-border); justify-content: flex-end; }
+.label-modal-header h3 { margin: 0; color: var(--text-primary); font-size: 20px; }
+.label-modal-header p, .label-modal-help { margin: 5px 0 0; color: var(--text-secondary); font-size: 13px; line-height: 1.5; }
+.label-modal-body { padding: 22px 24px 24px; }
+.label-modal-help { margin: 0 0 18px; }
+
+.label-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.label-form-grid label { display: grid; gap: 7px; color: var(--text-secondary); font-size: 12px; font-weight: 800; }
+.label-form-grid input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font: inherit;
+  font-weight: 700;
+}
+.label-form-grid input:focus { outline: 2px solid var(--clay-blue); outline-offset: 1px; }
+.label-form-error { margin: 16px 0 0; color: #dc2626; font-size: 13px; font-weight: 700; }
+
+@media (max-width: 640px) {
+  .label-modal-backdrop { padding: 12px; }
+  .label-modal-header, .label-modal-footer, .label-modal-body { padding-left: 18px; padding-right: 18px; }
+  .label-form-grid { grid-template-columns: 1fr; }
+  .label-modal-footer { flex-direction: column-reverse; align-items: stretch; }
+  .label-modal-footer .btn-apple { width: 100%; }
+}
+
+/* ==========================================================================
    GLOBAL DRAG OVERLAY & CUSTOM SCROLLBARS
    ========================================================================== */
 body::after {
@@ -2553,4 +2619,3 @@ body.global-drag-active::after {
     font-size: 11.5px;
   }
 }
-
