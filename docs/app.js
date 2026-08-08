@@ -599,7 +599,11 @@
     abrirSelector();
   });
   if (zona) {
-    zona.addEventListener("click", () => abrirSelector());
+    zona.addEventListener("click", (e) => {
+      // En móvil el input transparente recibe el toque y abre el selector
+      // nativo; no se debe intentar abrirlo una segunda vez por JavaScript.
+      if (e.target !== entrada) abrirSelector();
+    });
     zona.addEventListener("keydown", (e) => {
       if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();

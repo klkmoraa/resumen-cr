@@ -776,6 +776,24 @@ code {
   margin-bottom: 32px;
 }
 
+/* El selector nativo recibe el toque directamente: Safari móvil puede bloquear
+   input.click() cuando el control está oculto. */
+.dropzone-file-input {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dropzone-file-input:focus-visible {
+  outline: 3px solid var(--clay-blue);
+  outline-offset: 4px;
+}
+
 .dropzone-apple:hover {
   transform: translate3d(0, -4px, 0) scale3d(1.008, 1.008, 1);
   box-shadow: var(--clay-shadow-xl);
