@@ -75,6 +75,7 @@ class DocumentoPdfFalso {
     this.rectangulos = [];
     this.tamanio = 0;
     this.colorTexto = [];
+    this.colorRelleno = [];
   }
 
   setDrawColor() {}
@@ -82,9 +83,11 @@ class DocumentoPdfFalso {
   setFont() {}
   setFontSize(tamanio) { this.tamanio = tamanio; }
   setTextColor(...color) { this.colorTexto = color; }
-  setFillColor() {}
+  setFillColor(...color) { this.colorRelleno = color; }
   line() {}
-  rect(...args) { this.rectangulos.push(args); }
+  rect(...args) {
+    this.rectangulos.push({ args, colorRelleno: [...this.colorRelleno] });
+  }
   text(contenido) { this.textos.push({ contenido, tamanio: this.tamanio, color: this.colorTexto }); }
 }
 
@@ -101,7 +104,7 @@ test("la Remesa manual no se reemplaza al abrir etiquetas", () => {
   assert.equal(remesa.disabled, false);
 });
 
-test("la etiqueta conserva el orden y destaca Remesa, folio y caja", () => {
+test("la etiqueta conserva el orden, el fondo blanco y destaca nombre y caja", () => {
   const { etiquetas } = cargarEtiquetas();
   const pdf = new DocumentoPdfFalso();
 
@@ -121,10 +124,15 @@ test("la etiqueta conserva el orden y destaca Remesa, folio y caja", () => {
     "00001 AL 03000",
     "CAJA 001 DE 018",
   ]);
-  assert.ok(pdf.textos[0].tamanio >= 22);
+  assert.ok(pdf.textos[0].tamanio >= 29);
   assert.ok(pdf.textos[2].tamanio >= 21);
   assert.ok(pdf.textos[5].tamanio >= 26);
-  assert.ok(pdf.textos[6].tamanio >= 21);
-  assert.deepEqual(pdf.textos[6].color, [255, 255, 255]);
-  assert.ok(pdf.rectangulos.length >= 3);
+  assert.ok(pdf.textos[6].tamanio >= 32);
+  assert.deepEqual(pdf.textos[6].color, [0, 0, 0]);
+  assert.equal(
+    pdf.rectangulos.some(({ args, colorRelleno }) =>
+      args.at(-1) === "F" && colorRelleno.join(",") === "0,0,0"),
+    false,
+  );
+  assert.ok(pdf.rectangulos.length >= 2);
 });
