@@ -43,6 +43,7 @@
   const EXTENSIONES_VALIDAS = [".xlsx", ".xlsm", ".csv"];
   let contador = 0;
   const trabajosListos = [];
+  const urlsTemporales = new Set();
   let currentModalFilas = [];
   let currentModalNombre = "";
 
@@ -129,7 +130,7 @@
 
   // --- Worker Pool ---
   const workerPool = [];
-  const MAX_WORKERS = navigator.hardwareConcurrency || 4;
+  const MAX_WORKERS = Math.min(navigator.hardwareConcurrency || 4, 4);
   function getWorker() {
     if (workerPool.length > 0) return workerPool.pop();
     return new Worker("worker.js");
@@ -489,10 +490,10 @@
       card.innerHTML = `
         <div class="historial-card-left">
           <div class="historial-meta-top">
-            <span class="historial-hora">${item.fecha}</span>
+            <span class="historial-hora">${escaparHtml(item.fecha)}</span>
             <span class="historial-tag">Completado</span>
           </div>
-          <strong class="historial-filename" title="${item.nombre}">${item.nombre}</strong>
+          <strong class="historial-filename" title="${escaparHtml(item.nombre)}">${escaparHtml(item.nombre)}</strong>
           <span class="historial-stats">${formatearNumero(item.totalRegs)} registros &middot; ${formatearNumero(item.crsDistintos)} CRs (${item.segundos}s)</span>
         </div>
         <div class="historial-card-right">
@@ -533,6 +534,26 @@
     return Number(n || 0).toLocaleString("es-MX");
   }
 
+  function escaparHtml(valor) {
+    return String(valor ?? "").replace(/[&<>'"]/g, (caracter) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      '"': "&quot;",
+    })[caracter]);
+  }
+
+  function liberarUrlsTemporales() {
+    urlsTemporales.forEach((url) => URL.revokeObjectURL(url));
+    urlsTemporales.clear();
+  }
+
+  function protegerCeldaCsv(valor) {
+    const texto = String(valor ?? "").replace(/"/g, '""');
+    return /^[=+\-@]/.test(texto) ? `'${texto}` : texto;
+  }
+
   function el(etiqueta, opciones) {
     const nodo = document.createElement(etiqueta);
     opciones = opciones || {};
@@ -569,6 +590,7 @@
       sonarPop(340);
       if (lista) lista.innerHTML = "";
       trabajosListos.length = 0;
+      liberarUrlsTemporales();
       if (entrada) entrada.disabled = false;
       actualizarContadorCola();
     });
@@ -581,6 +603,7 @@
       const listaArchivos = document.getElementById("lista-archivos");
       if (listaArchivos) listaArchivos.innerHTML = "";
       trabajosListos.length = 0;
+      liberarUrlsTemporales();
       if (entrada) entrada.disabled = false;
       actualizarContadorCola();
       btnLimpiarCola.style.display = "none";
@@ -691,7 +714,7 @@
         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
         <polyline points="14 2 14 8 20 8"/>
       </svg>
-      <span>${nombre}</span>
+      <span>${escaparHtml(nombre)}</span>
     `;
     header.appendChild(nombreSpan);
 
@@ -722,7 +745,7 @@
         <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
         <polyline points="14 2 14 8 20 8"/>
       </svg>
-      <span>${nombre}</span>
+      <span>${escaparHtml(nombre)}</span>
     `;
     header.appendChild(nombreSpan);
 
@@ -878,6 +901,7 @@
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
     const url = URL.createObjectURL(blob);
+    urlsTemporales.add(url);
 
     btnPrevia.addEventListener("click", () => {
       abrirModalPreview(archivoOriginal.name, r, r.filasResumen || [], url);
@@ -1160,8 +1184,8 @@
 
       tr.innerHTML = `
         <td>${idx + 1}</td>
-        <td class="td-folio">${f[0]}</td>
-        <td class="td-cr">${f[1]}</td>
+        <td class="td-folio">${escaparHtml(f[0])}</td>
+        <td class="td-cr">${escaparHtml(f[1])}</td>
         <td><strong>${formatearNumero(f[2])}</strong></td>
         <td><span class="pct-chip">${pct}%</span></td>
       `;
@@ -1207,7 +1231,7 @@
       if (!currentModalFilas || !currentModalFilas.length) return;
       const csvLines = ["FOLIO,CENTRO_REPARTO,CANTIDAD"]
         .concat(
-          currentModalFilas.map((f) => `"${f[0]}","${f[1]}",${f[2]}`)
+          currentModalFilas.map((f) => `"${protegerCeldaCsv(f[0])}","${protegerCeldaCsv(f[1])}",${f[2]}`)
         )
         .join("\n");
 

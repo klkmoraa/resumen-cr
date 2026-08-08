@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
+import { randomUUID } from 'crypto';
 import multer from 'multer';
 import archiver from 'archiver';
 import { procesarBufferExcel, ResumenStats } from './src/core.js';
@@ -10,7 +10,7 @@ const __dirname = path.resolve();
 
 const app = express();
 const PORT = 3000;
-const HOST = '0.0.0.0';
+const HOST = process.env.HOST || '127.0.0.1';
 
 const CARPETA_TRABAJO = path.join(__dirname, 'webapp', '_trabajo');
 if (!fs.existsSync(CARPETA_TRABAJO)) {
@@ -18,9 +18,10 @@ if (!fs.existsSync(CARPETA_TRABAJO)) {
 }
 
 const HORAS_RETENCION = 6;
+const MAX_ARCHIVOS_POR_CARGA = 10;
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 300 * 1024 * 1024 }, // 300 MB
+  limits: { fileSize: 300 * 1024 * 1024, files: MAX_ARCHIVOS_POR_CARGA, fields: 5 },
 });
 
 interface Job {
@@ -50,6 +51,16 @@ function limpiarJobsViejos() {
       JOBS.delete(id);
     }
   }
+
+  for (const entrada of fs.readdirSync(CARPETA_TRABAJO, { withFileTypes: true })) {
+    if (!entrada.isDirectory()) continue;
+    const carpeta = path.join(CARPETA_TRABAJO, entrada.name);
+    try {
+      if (fs.statSync(carpeta).mtimeMs < limite) {
+        fs.rmSync(carpeta, { recursive: true, force: true });
+      }
+    } catch {}
+  }
 }
 
 const EXTENSIONES_VALIDAS = ['.xlsx', '.xlsm', '.csv'];
@@ -60,8 +71,15 @@ function extensionValida(nombre: string): boolean {
 }
 
 // Servir archivos estáticos
+app.disable('x-powered-by');
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+  next();
+});
 app.use(express.static(path.join(__dirname, 'docs')));
-app.use('/static', express.static(path.join(__dirname, 'webapp', 'static')));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 // Página Principal
@@ -69,14 +87,6 @@ app.get('/', (req, res) => {
   const docsTemplate = path.join(__dirname, 'docs', 'index.html');
   if (fs.existsSync(docsTemplate)) {
     return res.sendFile(docsTemplate);
-  }
-  const templatePath = path.join(__dirname, 'webapp', 'templates', 'index.html');
-  if (fs.existsSync(templatePath)) {
-    let html = fs.readFileSync(templatePath, 'utf-8');
-    html = html.replace(/\{\{\s*url_for\('static',\s*filename='([^']+)'\)\s*\}\}/g, '/static/$1');
-    html = html.replace(/\{\{\s*columna_objetivo\s*\}\}/g, 'pr_centro_reparto');
-    html = html.replace(/\{\{\s*extensiones\s*\}\}/g, '.xlsx, .xlsm, .csv');
-    return res.send(html);
   }
   return res.status(404).send('Página no encontrada');
 });
@@ -111,7 +121,7 @@ app.post('/api/subir', upload.array('archivos'), async (req, res) => {
       continue;
     }
 
-    const jobId = Math.random().toString(36).substring(2, 14);
+    const jobId = randomUUID();
     const jobFolder = path.join(CARPETA_TRABAJO, jobId);
     fs.mkdirSync(jobFolder, { recursive: true });
 
@@ -220,6 +230,20 @@ app.get('/api/descargar-zip', (req, res) => {
   archive.pipe(res);
   archive.finalize();
 });
+
+app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  if (error instanceof multer.MulterError) {
+    const mensaje = error.code === 'LIMIT_FILE_SIZE'
+      ? 'Cada archivo puede pesar hasta 300 MB.'
+      : `Carga no válida: ${error.message}`;
+    return res.status(400).json({ error: mensaje });
+  }
+  console.error('Error no controlado en el servidor:', error);
+  return res.status(500).json({ error: 'No se pudo procesar la solicitud.' });
+});
+
+const limpiezaProgramada = setInterval(limpiarJobsViejos, 60 * 60 * 1000);
+limpiezaProgramada.unref();
 
 // Start Server
 app.listen(PORT, HOST, () => {
