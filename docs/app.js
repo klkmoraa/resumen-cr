@@ -1105,19 +1105,14 @@
       doc.text(String(contenido).toUpperCase(), centro, y, { align: "center", maxWidth: ancho - 52 });
     };
 
-    texto(datos.linea1, 41, 30, "bold");
-    texto(datos.linea2, 57, 20, "bold");
-    doc.setLineWidth(0.35);
-    doc.line(centro - 48, 65, centro + 48, 65);
-    texto(datos.remesa, 83, 23, "bold");
-    texto(`CENTRO DE REPARTO    ${datos.ot}`, 101, 13, "bold");
-    texto("FOLIO", 118, 13, "bold");
-    texto(`${formatoFolio(inicio)} AL ${formatoFolio(fin)}`, 140, 28, "bold");
-    doc.setLineWidth(0.5);
-    doc.line(centro - 76, 153, centro + 76, 153);
+    texto(datos.linea1, 38, 34, "bold");
+    texto(datos.linea2, 58, 25, "bold");
+    texto(datos.remesa, 83, 28, "bold");
+    texto(`CENTRO DE REPARTO    ${datos.ot}`, 107, 18, "bold");
+    texto("FOLIO", 127, 17, "bold");
+    texto(`${formatoFolio(inicio)} AL ${formatoFolio(fin)}`, 151, 32, "bold");
     doc.setTextColor(0, 0, 0);
-    texto(`CAJA ${String(numeroCaja).padStart(3, "0")} DE ${String(totalCajas).padStart(3, "0")}`, 178, 34, "bold");
-    doc.line(centro - 76, 187, centro + 76, 187);
+    texto(`CAJA ${String(numeroCaja).padStart(3, "0")} DE ${String(totalCajas).padStart(3, "0")}`, 184, 40, "bold");
   }
 
   function generarEtiquetasPdf(datos) {

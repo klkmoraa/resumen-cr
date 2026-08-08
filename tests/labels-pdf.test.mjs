@@ -73,6 +73,7 @@ class DocumentoPdfFalso {
     this.internal = { pageSize: { getWidth: () => 279.4, getHeight: () => 215.9 } };
     this.textos = [];
     this.rectangulos = [];
+    this.lineas = [];
     this.tamanio = 0;
     this.colorTexto = [];
     this.colorRelleno = [];
@@ -84,7 +85,7 @@ class DocumentoPdfFalso {
   setFontSize(tamanio) { this.tamanio = tamanio; }
   setTextColor(...color) { this.colorTexto = color; }
   setFillColor(...color) { this.colorRelleno = color; }
-  line() {}
+  line(...args) { this.lineas.push(args); }
   rect(...args) {
     this.rectangulos.push({ args, colorRelleno: [...this.colorRelleno] });
   }
@@ -104,7 +105,7 @@ test("la Remesa manual no se reemplaza al abrir etiquetas", () => {
   assert.equal(remesa.disabled, false);
 });
 
-test("la etiqueta conserva el orden, el fondo blanco y destaca nombre y caja", () => {
+test("la etiqueta amplía todos los textos y elimina las líneas divisorias", () => {
   const { etiquetas } = cargarEtiquetas();
   const pdf = new DocumentoPdfFalso();
 
@@ -124,15 +125,13 @@ test("la etiqueta conserva el orden, el fondo blanco y destaca nombre y caja", (
     "00001 AL 03000",
     "CAJA 001 DE 018",
   ]);
-  assert.ok(pdf.textos[0].tamanio >= 29);
-  assert.ok(pdf.textos[2].tamanio >= 21);
-  assert.ok(pdf.textos[5].tamanio >= 26);
-  assert.ok(pdf.textos[6].tamanio >= 32);
+  assert.deepEqual(pdf.textos.map(({ tamanio }) => tamanio), [34, 25, 28, 18, 17, 32, 40]);
+  assert.equal(pdf.lineas.length, 0);
   assert.deepEqual(pdf.textos[6].color, [0, 0, 0]);
   assert.equal(
     pdf.rectangulos.some(({ args, colorRelleno }) =>
       args.at(-1) === "F" && colorRelleno.join(",") === "0,0,0"),
     false,
   );
-  assert.ok(pdf.rectangulos.length >= 2);
+  assert.equal(pdf.rectangulos.length, 2);
 });
