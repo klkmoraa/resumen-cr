@@ -313,7 +313,7 @@
       </button>
     </header>
     <div class="label-modal-body">
-      <p class="label-modal-help">Los datos se imprimen en cada caja. ATM y OT se obtienen del nombre del archivo y se pueden corregir.</p>
+      <p class="label-modal-help">Los datos se imprimen en cada caja. La Remesa se captura manualmente; OT se toma del nombre del archivo y se puede corregir.</p>
       <div class="label-form-grid">
         <label>Primer renglón
           <input id="etiquetas-linea-1" required maxlength="60" value="AUTOTRAFFIC" autocomplete="organization">
@@ -321,8 +321,8 @@
         <label>Segundo renglón
           <input id="etiquetas-linea-2" required maxlength="60" value="ESTADO DE MÉXICO">
         </label>
-        <label>ATM
-          <input id="etiquetas-atm" required maxlength="40" placeholder="ATM 2607 - 58">
+        <label>Remesa
+          <input id="etiquetas-remesa" required maxlength="40" placeholder="Ej. REMESA 2607 - 58" autocomplete="off">
         </label>
         <label>OT
           <input id="etiquetas-ot" required maxlength="40" placeholder="OT- 3708">
@@ -346,6 +346,6 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
-<script src="app.js?v=8"></script>
+<script src="app.js?v=9"></script>
 </body>
 </html>

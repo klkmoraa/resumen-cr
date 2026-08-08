@@ -35,7 +35,7 @@
   const etiquetasResumen = document.getElementById("etiquetas-resumen");
   const etiquetasLinea1 = document.getElementById("etiquetas-linea-1");
   const etiquetasLinea2 = document.getElementById("etiquetas-linea-2");
-  const etiquetasAtm = document.getElementById("etiquetas-atm");
+  const etiquetasRemesa = document.getElementById("etiquetas-remesa");
   const etiquetasOt = document.getElementById("etiquetas-ot");
   const etiquetasError = document.getElementById("etiquetas-error");
   const etiquetasGenerar = document.getElementById("etiquetas-generar");
@@ -1026,12 +1026,9 @@
 
   function obtenerDatosArchivo(nombreArchivo) {
     const base = String(nombreArchivo || "").replace(/\.[^.]+$/, "");
-    const atm = base.match(/(?:^|[_\s-])ATM[_\s-]*(\d{4})[_\s-]*(\d+)(?=$|[_\s-])/i);
     const ot = base.match(/(?:^|[_\s-])OT[_\s-]*(\d+)(?=$|[_\s-])/i);
     return {
-      atm: atm ? `ATM ${atm[1]} - ${atm[2]}` : "",
       ot: ot ? `OT- ${ot[1]}` : "",
-      faltaATM: !atm,
       faltaOT: !ot,
     };
   }
@@ -1045,8 +1042,7 @@
 
     const datosArchivo = obtenerDatosArchivo(currentModalNombre || modalFilename.textContent);
     const totalCajas = Math.ceil(total / 3000);
-    etiquetasAtm.value = datosArchivo.atm;
-    etiquetasOt.value = datosArchivo.ot;
+    if (!etiquetasOt.value.trim()) etiquetasOt.value = datosArchivo.ot;
     etiquetasResumen.textContent = `${formatearNumero(total)} folios válidos · ${formatearNumero(totalCajas)} caja${totalCajas === 1 ? "" : "s"} · una etiqueta por hoja carta horizontal.`;
     etiquetasError.hidden = true;
     modalEtiquetas.hidden = false;
@@ -1061,14 +1057,16 @@
   function dibujarEtiquetaCaja(doc, datos, inicio, fin, numeroCaja, totalCajas) {
     const ancho = doc.internal.pageSize.getWidth();
     const alto = doc.internal.pageSize.getHeight();
-    const margenX = 21;
-    const margenY = 18;
+    const margenX = 16;
+    const margenY = 13;
     const centro = ancho / 2;
 
-    doc.setDrawColor(31, 41, 55);
-    doc.setLineWidth(0.8);
+    doc.setDrawColor(0);
+    doc.setLineWidth(0.9);
     doc.rect(margenX, margenY, ancho - margenX * 2, alto - margenY * 2);
-    doc.setTextColor(17, 24, 39);
+    doc.setLineWidth(0.35);
+    doc.rect(20, 17, ancho - 40, alto - 34);
+    doc.setTextColor(0, 0, 0);
 
     const texto = (contenido, y, tamanio, estilo) => {
       doc.setFont("helvetica", estilo);
@@ -1076,15 +1074,18 @@
       doc.text(String(contenido).toUpperCase(), centro, y, { align: "center", maxWidth: ancho - 52 });
     };
 
-    texto(datos.linea1, 42, 18, "bold");
-    texto(datos.linea2, 54, 16, "normal");
+    texto(datos.linea1, 40, 23, "bold");
+    texto(datos.linea2, 54, 19, "bold");
     doc.setLineWidth(0.35);
     doc.line(centro - 48, 62, centro + 48, 62);
-    texto(datos.atm, 76, 17, "bold");
-    texto(`CENTRO DE REPARTO    ${datos.ot}`, 91, 11, "bold");
-    texto("FOLIO", 109, 11, "bold");
-    texto(`${formatoFolio(inicio)} AL ${formatoFolio(fin)}`, 125, 21, "bold");
-    texto(`CAJA ${String(numeroCaja).padStart(3, "0")} DE ${String(totalCajas).padStart(3, "0")}`, 144, 15, "bold");
+    texto(datos.remesa, 79, 22, "bold");
+    texto(`CENTRO DE REPARTO    ${datos.ot}`, 96, 13, "bold");
+    texto("FOLIO", 113, 13, "bold");
+    texto(`${formatoFolio(inicio)} AL ${formatoFolio(fin)}`, 135, 27, "bold");
+    doc.setFillColor(0, 0, 0);
+    doc.rect(56, 146, ancho - 112, 34, "F");
+    doc.setTextColor(255, 255, 255);
+    texto(`CAJA ${String(numeroCaja).padStart(3, "0")} DE ${String(totalCajas).padStart(3, "0")}`, 168, 22, "bold");
   }
 
   function generarEtiquetasPdf(datos) {
@@ -1138,11 +1139,11 @@
       const datos = {
         linea1: etiquetasLinea1.value.trim(),
         linea2: etiquetasLinea2.value.trim(),
-        atm: etiquetasAtm.value.trim(),
+        remesa: etiquetasRemesa.value.trim(),
         ot: etiquetasOt.value.trim(),
       };
-      if (!datos.linea1 || !datos.linea2 || !datos.atm || !datos.ot) {
-        etiquetasError.textContent = "Completa los dos renglones, ATM y OT antes de generar las etiquetas.";
+      if (!datos.linea1 || !datos.linea2 || !datos.remesa || !datos.ot) {
+        etiquetasError.textContent = "Completa los dos renglones, Remesa y OT antes de generar las etiquetas.";
         etiquetasError.hidden = false;
         return;
       }

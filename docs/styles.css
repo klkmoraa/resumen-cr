@@ -1992,6 +1992,7 @@ body.compact-view .kpi-grid {
   font-weight: 700;
 }
 .label-form-grid input:focus { outline: 2px solid var(--clay-blue); outline-offset: 1px; }
+.label-form-grid input:not(:disabled) { cursor: text; pointer-events: auto; }
 .label-form-error { margin: 16px 0 0; color: #dc2626; font-size: 13px; font-weight: 700; }
 
 @media (max-width: 640px) {

@@ -1,0 +1,130 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import path from "node:path";
+import test from "node:test";
+import vm from "node:vm";
+
+const root = path.resolve(import.meta.dirname, "..");
+const appOriginal = fs.readFileSync(path.join(root, "docs/app.js"), "utf8");
+const appParaPrueba = appOriginal.replace(
+  /\}\)\(\);\s*$/,
+  "globalThis.__etiquetas = { abrirModalEtiquetas, dibujarEtiquetaCaja, fijarFilas: (filas) => { currentModalFilas = filas; }, fijarNombre: (nombre) => { currentModalNombre = nombre; } }; })();",
+);
+
+class ElementoFalso {
+  constructor() {
+    this.listeners = new Map();
+    this.children = [];
+    this.style = {};
+    this.classList = { add() {}, remove() {} };
+    this.atributos = new Map();
+    this.value = "";
+    this.textContent = "";
+    this.hidden = false;
+    this.disabled = false;
+  }
+
+  addEventListener(tipo, manejador) {
+    this.listeners.set(tipo, [...(this.listeners.get(tipo) || []), manejador]);
+  }
+
+  appendChild(hijo) { this.children.push(hijo); return hijo; }
+  prepend(hijo) { this.children.unshift(hijo); return hijo; }
+  querySelector() { return null; }
+  querySelectorAll() { return []; }
+  setAttribute(nombre, valor) { this.atributos.set(nombre, String(valor)); }
+  getAttribute(nombre) { return this.atributos.get(nombre) || null; }
+  focus() {}
+}
+
+function cargarEtiquetas() {
+  const ids = [
+    "modal-etiquetas", "etiquetas-linea-1", "etiquetas-linea-2",
+    "etiquetas-remesa", "etiquetas-ot", "etiquetas-resumen",
+    "etiquetas-error", "modal-filename",
+  ];
+  const elementos = new Map(ids.map((id) => [id, new ElementoFalso()]));
+  const cuerpo = new ElementoFalso();
+  const documento = {
+    body: cuerpo,
+    documentElement: new ElementoFalso(),
+    getElementById: (id) => elementos.get(id) || null,
+    querySelectorAll: () => [],
+    createElement: () => new ElementoFalso(),
+    addEventListener() {},
+  };
+  const contexto = {
+    document: documento,
+    window: { matchMedia: () => ({ matches: false, addEventListener() {} }) },
+    navigator: { hardwareConcurrency: 2 },
+    localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
+    Worker: class { postMessage() {} terminate() {} },
+    URL: { revokeObjectURL() {} },
+    performance: { now: () => 0 },
+    setTimeout() {},
+    console,
+  };
+  vm.runInNewContext(appParaPrueba, contexto, { filename: "docs/app.js" });
+  return { etiquetas: contexto.__etiquetas, elementos };
+}
+
+class DocumentoPdfFalso {
+  constructor() {
+    this.internal = { pageSize: { getWidth: () => 279.4, getHeight: () => 215.9 } };
+    this.textos = [];
+    this.rectangulos = [];
+    this.tamanio = 0;
+    this.colorTexto = [];
+  }
+
+  setDrawColor() {}
+  setLineWidth() {}
+  setFont() {}
+  setFontSize(tamanio) { this.tamanio = tamanio; }
+  setTextColor(...color) { this.colorTexto = color; }
+  setFillColor() {}
+  line() {}
+  rect(...args) { this.rectangulos.push(args); }
+  text(contenido) { this.textos.push({ contenido, tamanio: this.tamanio, color: this.colorTexto }); }
+}
+
+test("la Remesa manual no se reemplaza al abrir etiquetas", () => {
+  const { etiquetas, elementos } = cargarEtiquetas();
+  const remesa = elementos.get("etiquetas-remesa");
+  remesa.value = "REMESA MANUAL 77";
+  etiquetas.fijarFilas([["1 - 3", "CR", 3]]);
+  etiquetas.fijarNombre("prod_OT_3708_ATM2607-58.xlsx");
+
+  etiquetas.abrirModalEtiquetas();
+
+  assert.equal(remesa.value, "REMESA MANUAL 77");
+  assert.equal(remesa.disabled, false);
+});
+
+test("la etiqueta conserva el orden y destaca Remesa, folio y caja", () => {
+  const { etiquetas } = cargarEtiquetas();
+  const pdf = new DocumentoPdfFalso();
+
+  etiquetas.dibujarEtiquetaCaja(pdf, {
+    linea1: "AUTOTRAFFIC",
+    linea2: "PUEBLA",
+    remesa: "REMESA 2607 - 58",
+    ot: "OT- 3708",
+  }, 1, 3000, 1, 18);
+
+  assert.deepEqual(pdf.textos.map((texto) => texto.contenido), [
+    "AUTOTRAFFIC",
+    "PUEBLA",
+    "REMESA 2607 - 58",
+    "CENTRO DE REPARTO    OT- 3708",
+    "FOLIO",
+    "00001 AL 03000",
+    "CAJA 001 DE 018",
+  ]);
+  assert.ok(pdf.textos[0].tamanio >= 22);
+  assert.ok(pdf.textos[2].tamanio >= 21);
+  assert.ok(pdf.textos[5].tamanio >= 26);
+  assert.ok(pdf.textos[6].tamanio >= 21);
+  assert.deepEqual(pdf.textos[6].color, [255, 255, 255]);
+  assert.ok(pdf.rectangulos.length >= 3);
+});
