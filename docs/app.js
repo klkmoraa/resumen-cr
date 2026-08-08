@@ -9,7 +9,7 @@
   const entrada = document.getElementById("entrada-archivos");
   const btnElegir = document.getElementById("btn-elegir");
   const cola = document.getElementById("cola");
-  const lista = document.getElementById("lista-trabajos");
+  const lista = document.getElementById("lista-archivos");
   const campoColumna = document.getElementById("campo-columna");
   const lblColActual = document.getElementById("lbl-col-actual");
   const btnLimpiar = document.getElementById("btn-limpiar");
